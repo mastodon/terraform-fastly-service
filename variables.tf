@@ -226,7 +226,7 @@ variable "as_blocklist_name" {
 }
 
 variable "as_request_blocklist" {
-  description = "List of Autonomous Systems (AS) to block from making explicit requests."
+  description = "List of Autonomous Systems (AS) to block from making /api or /explore requests."
   type        = list(number)
   default     = []
 }
