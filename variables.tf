@@ -22,7 +22,7 @@ variable "activate" {
 variable "default_ttl" {
   description = "The default Time-to-live (TTL) for requests."
   type        = number
-  default     = 3600
+  default     = 300
 }
 
 variable "http3" {
