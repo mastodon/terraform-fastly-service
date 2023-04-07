@@ -85,7 +85,7 @@ variable "healthchecks" {
   type = list(object({
     name = string
     host = string
-    path = string
+    path = optional(string, "/health")
 
     check_interval    = optional(number, 60000)
     expected_response = optional(number, 200)
