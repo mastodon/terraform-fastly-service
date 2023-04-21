@@ -46,3 +46,60 @@ variable "datadog_token" {
   type        = string
   sensitive   = true
 }
+
+# IP block lists
+
+variable "ip_blocklist" {
+  description = "List of IP CIDR blocks to deny access."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition     = can([for s in var.ip_blocklist : regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", s)])
+    error_message = "Each list item must be in a CIDR block format. Example: [\"10.106.108.0/25\"]."
+  }
+}
+
+variable "ip_blocklist_acl_name" {
+  description = "Name for the ACL responsible for holding all the blocked IP ranges."
+  type        = string
+  default     = "IP Block list"
+}
+
+# AS block lists
+
+variable "as_blocklist" {
+  description = "List of Autonomous Systems (AS) to block."
+  type        = list(number)
+  default     = []
+}
+
+variable "as_blocklist_name" {
+  description = "Name of the AS blocklist"
+  type        = string
+  default     = "Blocked AS Numbers"
+}
+
+variable "as_request_blocklist" {
+  description = "List of Autonomous Systems (AS) to block from making /api or /explore requests."
+  type        = list(number)
+  default     = []
+}
+
+variable "as_request_blocklist_name" {
+  description = "Name of the AS request blocklist"
+  type        = string
+  default     = "Blocked AS Numbers client requests"
+}
+
+# Signal Sciences
+
+variable "signal_science_host" {
+  description = "Hostname to use to integrate with Signal Sciences"
+  type        = string
+}
+
+variable "signal_science_shared_key" {
+  description = "Shared key to use when integrating with Signal Sciences"
+  type        = string
+}

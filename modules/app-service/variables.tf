@@ -98,3 +98,15 @@ variable "as_request_blocklist_name" {
   type        = string
   default     = "Blocked AS Numbers client requests"
 }
+
+# Signal Sciences
+
+variable "signal_science_host" {
+  description = "Hostname to use to integrate with Signal Sciences"
+  type        = string
+}
+
+variable "signal_science_shared_key" {
+  description = "Shared key to use when integrating with Signal Sciences"
+  type        = string
+}

@@ -7,7 +7,7 @@ locals {
   vcl_segmented_caching = file("${path.module}/vcl/segmented_caching.vcl")
 }
 
-resource "fastly_service_vcl" "service" {
+resource "fastly_service_vcl" "files_service" {
   name = var.hostname
 
   http3          = true
@@ -21,6 +21,7 @@ resource "fastly_service_vcl" "service" {
     name = local.backend_name
     address = var.backend_address
 
+    keepalive_time    = 0
     override_host     = var.backend_address
     port              = 443
     shield            = var.shield_region

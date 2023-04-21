@@ -6,6 +6,12 @@ locals {
 
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
 
+  vcl_main = file("${path.module}/vcl/main.vcl")
+  vcl_sigsci_config = templatefile("${path.module}/vcl/sigsci_config.vcl", {
+    host = var.signal_science_host,
+    shared_key = var.signal_science_shared_key
+  })
+
   vcl_apex_error = templatefile("${path.module}/vcl/apex_error.vcl", {hostname = var.hostname})
   vcl_apex_redirect = templatefile("${path.module}/vcl/apex_redirect.vcl", {hostname = var.hostname})
   vcl_block_ddos_ja3 = file("${path.module}/vcl/block_ddos_ja3.vcl")
@@ -16,7 +22,7 @@ locals {
   vcl_tarpit = file("${path.module}/vcl/tarpit.vcl")
 }
 
-resource "fastly_service_vcl" "service" {
+resource "fastly_service_vcl" "app_service" {
   name = var.hostname
 
   default_ttl    = 0
@@ -36,8 +42,9 @@ resource "fastly_service_vcl" "service" {
     name    = local.backend_name
     address = var.backend_address
 
-    auto_loadbalance  = true
+    auto_loadbalance  = false
     healthcheck       = local.healthcheck_name
+    keepalive_time    = 0
     override_host     = var.hostname
     port              = 443
     max_conn          = 500
@@ -55,7 +62,12 @@ resource "fastly_service_vcl" "service" {
     host    = var.hostname
     path    = var.healthcheck_path
 
+    check_interval = 60000
+    initial = 1
     method = var.healthcheck_method
+    threshold         = 1
+    timeout           = 5000
+    window            = 2
   }
 
   # Datadog logging
@@ -88,6 +100,19 @@ resource "fastly_service_vcl" "service" {
     ignore_if_set = false
     priority      = 100
     source        = "\"max-age=31557600\""
+  }
+
+  # Custom VCL
+  vcl {
+    name    = "Main VCL File"
+    content = local.vcl_main
+
+    main = true
+  }
+
+  vcl {
+    name    = "sigsci_config"
+    content = local.vcl_sigsci_config
   }
 
   # Custom VCL snippets
@@ -167,7 +192,7 @@ resource "fastly_service_vcl" "service" {
   }
 
   response_object {
-    name = "Associated Domain"
+    name = "Associated domain"
 
     content           = local.associated_domain_response
     content_type      = "application/json"
@@ -274,9 +299,9 @@ resource "fastly_service_vcl" "service" {
 # IP Blocklist entries
 resource "fastly_service_acl_entries" "ip_blocklist_entries" {
   for_each = {
-    for d in fastly_service_vcl.service.acl : d.name => d if d.name == var.ip_blocklist_acl_name
+    for d in fastly_service_vcl.app_service.acl : d.name => d if d.name == var.ip_blocklist_acl_name
   }
-  service_id = fastly_service_vcl.service.id
+  service_id = fastly_service_vcl.app_service.id
   acl_id     = each.value.acl_id
 
   dynamic "entry" {
@@ -294,9 +319,9 @@ resource "fastly_service_acl_entries" "ip_blocklist_entries" {
 
 resource "fastly_service_dictionary_items" "as_blocklist_entries" {
   for_each = {
-    for d in fastly_service_vcl.service.dictionary : d.name => d if d.name == var.as_blocklist_name
+    for d in fastly_service_vcl.app_service.dictionary : d.name => d if d.name == var.as_blocklist_name
   }
-  service_id    = fastly_service_vcl.service.id
+  service_id    = fastly_service_vcl.app_service.id
   dictionary_id = each.value.dictionary_id
 
   items = { for i in var.as_blocklist : i => "block" }
@@ -304,9 +329,9 @@ resource "fastly_service_dictionary_items" "as_blocklist_entries" {
 
 resource "fastly_service_dictionary_items" "as_request_blocklist_entries" {
   for_each = {
-    for d in fastly_service_vcl.service.dictionary : d.name => d if d.name == var.as_request_blocklist_name
+    for d in fastly_service_vcl.app_service.dictionary : d.name => d if d.name == var.as_request_blocklist_name
   }
-  service_id    = fastly_service_vcl.service.id
+  service_id    = fastly_service_vcl.app_service.id
   dictionary_id = each.value.dictionary_id
 
   items = { for i in var.as_request_blocklist : i => "block" }
