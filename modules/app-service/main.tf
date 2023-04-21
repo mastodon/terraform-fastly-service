@@ -2,6 +2,8 @@ locals {
   backend_name     = var.backend_name != "" ? var.backend_name : "${var.hostname} - backend"
   healthcheck_name = var.healthcheck_name != "" ? var.healthcheck_name : "${var.hostname} - healthcheck"
 
+  edge_security_dict_name = "Edge_Security"
+
   datadog_format = file("${path.module}/logging/datadog.json")
 
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
@@ -75,6 +77,8 @@ resource "fastly_service_vcl" "app_service" {
     name   = "Mastodon Datadog EU"
     format = local.datadog_format
     token  = var.datadog_token
+
+    region = "EU"
   }
 
   # Force TLS/HSTS settings
@@ -201,6 +205,10 @@ resource "fastly_service_vcl" "app_service" {
     status            = 200
   }
 
+  dictionary {
+    name = local.edge_security_dict_name
+  }
+
   # IP Blocklist settings
   # Creates similar objects & resources to what the GUI IP Blocklist creates.
 
@@ -294,6 +302,16 @@ resource "fastly_service_vcl" "app_service" {
       status            = 403
     }
   }
+}
+
+resource "fastly_service_dictionary_items" "edge_security" {
+  for_each = {
+    for d in fastly_service_vcl.app_service.dictionary : d.name => d if d.name == local.edge_security_dict_name
+  }
+  service_id    = fastly_service_vcl.app_service.id
+  dictionary_id = each.value.dictionary_id
+
+  items = {Enabled = 100}
 }
 
 # IP Blocklist entries
