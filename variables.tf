@@ -25,20 +25,27 @@ variable "shield_region" {
   type        = string
 }
 
-variable "files_backend_name" {
-  description = "Optional name for the files backend."
+variable "healthcheck_name" {
+  description = "Optional name for the healthcheck."
   type        = string
   default     = ""
 }
 
-variable "files_backend_address" {
-  description = "Address to use for connecting to the files backend. Can be a hostname or an IP address."
+variable "healthcheck_path" {
+  description = "URL to use when doing a healthcheck."
   type        = string
+  default     = "/health"
 }
 
-variable "files_shield_region" {
-  description = "Which Fastly shield region to use for the files service. Should correspond with the shield code."
+variable "healthcheck_method" {
+  description = "HTTP method to use when doing a healthcheck."
   type        = string
+  default     = "HEAD"
+
+  validation {
+    condition     = contains(["CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT", "TRACE"], var.healthcheck_method)
+    error_message = "Healthcheck method must be a valid HTTP method"
+  }
 }
 
 variable "datadog_token" {
@@ -97,9 +104,11 @@ variable "as_request_blocklist_name" {
 variable "signal_science_host" {
   description = "Hostname to use to integrate with Signal Sciences"
   type        = string
+  default     = ""
 }
 
 variable "signal_science_shared_key" {
   description = "Shared key to use when integrating with Signal Sciences"
   type        = string
+  default     = ""
 }
