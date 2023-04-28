@@ -10,18 +10,19 @@ locals {
 
   vcl_main = file("${path.module}/vcl/main.vcl")
   vcl_sigsci_config = templatefile("${path.module}/vcl/sigsci_config.vcl", {
-    host = var.signal_science_host,
+    host       = var.signal_science_host,
     shared_key = var.signal_science_shared_key
   })
 
-  vcl_apex_error = templatefile("${path.module}/vcl/apex_error.vcl", {hostname = var.hostname})
-  vcl_apex_redirect = templatefile("${path.module}/vcl/apex_redirect.vcl", {hostname = var.hostname})
-  vcl_block_ddos_ja3 = file("${path.module}/vcl/block_ddos_ja3.vcl")
-  vcl_block_user_agents = file("${path.module}/vcl/block_user_agents.vcl")
+  vcl_apex_error            = templatefile("${path.module}/vcl/apex_error.vcl", { hostname = var.hostname })
+  vcl_apex_redirect         = templatefile("${path.module}/vcl/apex_redirect.vcl", { hostname = var.hostname })
+  vcl_backend_403           = file("${path.module}/vcl/backend_403.vcl")
+  vcl_block_ddos_ja3        = file("${path.module}/vcl/block_ddos_ja3.vcl")
+  vcl_block_user_agents     = file("${path.module}/vcl/block_user_agents.vcl")
   vcl_custom_error_redirect = file("${path.module}/vcl/custom_error_redirect.vcl")
-  vcl_custom_error = templatefile("${path.module}/vcl/custom_error.vcl", {hostname = var.hostname})
-  vcl_static_cache_control = file("${path.module}/vcl/static_cache_control.vcl")
-  vcl_tarpit = file("${path.module}/vcl/tarpit.vcl")
+  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", { hostname = var.hostname })
+  vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
+  vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
 }
 
 resource "fastly_service_vcl" "app_service" {
@@ -60,16 +61,16 @@ resource "fastly_service_vcl" "app_service" {
 
   # Healthcheck
   healthcheck {
-    name    = local.healthcheck_name
-    host    = var.hostname
-    path    = var.healthcheck_path
+    name = local.healthcheck_name
+    host = var.hostname
+    path = var.healthcheck_path
 
     check_interval = 60000
-    initial = 1
-    method = var.healthcheck_method
-    threshold         = 1
-    timeout           = 5000
-    window            = 2
+    initial        = 1
+    method         = var.healthcheck_method
+    threshold      = 1
+    timeout        = 5000
+    window         = 2
   }
 
   # Datadog logging
@@ -178,6 +179,13 @@ resource "fastly_service_vcl" "app_service" {
     priority = 100
   }
 
+  snippet {
+    name     = "Custom header for source 403"
+    content  = local.vcl_backend_403
+    type     = "fetch"
+    priority = 100
+  }
+
   #snippet {
   #  name     = "Block outdated user agents"
   #  content  = local.vcl_block_user_agents
@@ -188,10 +196,10 @@ resource "fastly_service_vcl" "app_service" {
   # Additional products
   product_enablement {
     brotli_compression = false
-    domain_inspector = false
-    image_optimizer = false
-    origin_inspector = false
-    websockets = false
+    domain_inspector   = false
+    image_optimizer    = false
+    origin_inspector   = false
+    websockets         = false
   }
 
   # Support Apple Associated Domains
@@ -319,7 +327,7 @@ resource "fastly_service_dictionary_items" "edge_security" {
   service_id    = fastly_service_vcl.app_service.id
   dictionary_id = each.value.dictionary_id
 
-  items = {Enabled = 100}
+  items = { Enabled = 100 }
 }
 
 # IP Blocklist entries
