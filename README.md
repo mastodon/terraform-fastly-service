@@ -13,18 +13,23 @@ Contains much of the logic and default configuration that exists across all offi
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | >= 4.1.0 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_app_service"></a> [app\_service](#module\_app\_service) | ./modules/app-service | n/a |
-| <a name="module_files_service"></a> [files\_service](#module\_files\_service) | ./modules/files-service | n/a |
+No modules.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [fastly_service_acl_entries.ip_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_acl_entries) | resource |
+| [fastly_service_dictionary_items.as_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
+| [fastly_service_dictionary_items.as_request_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
+| [fastly_service_dictionary_items.edge_security](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
+| [fastly_service_vcl.app_service](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_vcl) | resource |
 
 ## Inputs
 
@@ -37,17 +42,24 @@ No resources.
 | <a name="input_backend_address"></a> [backend\_address](#input\_backend\_address) | Address to use for connecting to the backend. Can be a hostname or an IP address. | `string` | n/a | yes |
 | <a name="input_backend_ca_cert"></a> [backend\_ca\_cert](#input\_backend\_ca\_cert) | CA cert to use when connecting to the backend. | `string` | n/a | yes |
 | <a name="input_backend_name"></a> [backend\_name](#input\_backend\_name) | Optional name for the backend. | `string` | `""` | no |
-| <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | n/a | yes |
-| <a name="input_files_backend_address"></a> [files\_backend\_address](#input\_files\_backend\_address) | Address to use for connecting to the files backend. Can be a hostname or an IP address. | `string` | n/a | yes |
-| <a name="input_files_backend_name"></a> [files\_backend\_name](#input\_files\_backend\_name) | Optional name for the files backend. | `string` | `""` | no |
-| <a name="input_files_shield_region"></a> [files\_shield\_region](#input\_files\_shield\_region) | Which Fastly shield region to use for the files service. Should correspond with the shield code. | `string` | n/a | yes |
+| <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | `""` | no |
+| <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
+| <a name="input_healthcheck_expected_response"></a> [healthcheck\_expected\_response](#input\_healthcheck\_expected\_response) | Response to expect from a healthy endpoint. | `number` | `200` | no |
+| <a name="input_healthcheck_host"></a> [healthcheck\_host](#input\_healthcheck\_host) | Host to ping for healthcheck. Defaults to hostname. | `string` | `""` | no |
+| <a name="input_healthcheck_method"></a> [healthcheck\_method](#input\_healthcheck\_method) | HTTP method to use when doing a healthcheck. | `string` | `"HEAD"` | no |
+| <a name="input_healthcheck_name"></a> [healthcheck\_name](#input\_healthcheck\_name) | Optional name for the healthcheck. | `string` | `""` | no |
+| <a name="input_healthcheck_path"></a> [healthcheck\_path](#input\_healthcheck\_path) | URL to use when doing a healthcheck. | `string` | `"/health"` | no |
 | <a name="input_hostname"></a> [hostname](#input\_hostname) | Hostname the service points to. | `string` | n/a | yes |
 | <a name="input_ip_blocklist"></a> [ip\_blocklist](#input\_ip\_blocklist) | List of IP CIDR blocks to deny access. | `list(string)` | `[]` | no |
 | <a name="input_ip_blocklist_acl_name"></a> [ip\_blocklist\_acl\_name](#input\_ip\_blocklist\_acl\_name) | Name for the ACL responsible for holding all the blocked IP ranges. | `string` | `"IP Block list"` | no |
 | <a name="input_shield_region"></a> [shield\_region](#input\_shield\_region) | Which Fastly shield region to use. Should correspond with the shield code. | `string` | n/a | yes |
-| <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | n/a | yes |
-| <a name="input_signal_science_shared_key"></a> [signal\_science\_shared\_key](#input\_signal\_science\_shared\_key) | Shared key to use when integrating with Signal Sciences | `string` | n/a | yes |
+| <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | `""` | no |
+| <a name="input_signal_science_shared_key"></a> [signal\_science\_shared\_key](#input\_signal\_science\_shared\_key) | Shared key to use when integrating with Signal Sciences | `string` | `""` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_active_version"></a> [active\_version](#output\_active\_version) | The currently active version of the Fastly Service |
+| <a name="output_cloned_version"></a> [cloned\_version](#output\_cloned\_version) | The latest cloned version by the provider |
+| <a name="output_id"></a> [id](#output\_id) | The ID of this resource |

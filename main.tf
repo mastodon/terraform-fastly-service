@@ -1,5 +1,9 @@
 locals {
+  name = var.name != "" ? var.name : var.hostname
+
   backend_name     = var.backend_name != "" ? var.backend_name : "${var.hostname} - backend"
+  ssl_hostname     = var.ssl_hostname != "" ? var.ssl_hostname : var.hostname
+  healthcheck_host = var.healthcheck_host != "" ? var.healthcheck_host : var.hostname
   healthcheck_name = var.healthcheck_name != "" ? var.healthcheck_name : "${var.hostname} - healthcheck"
 
   edge_security_dict_name = "Edge_Security"
@@ -26,9 +30,9 @@ locals {
 }
 
 resource "fastly_service_vcl" "app_service" {
-  name = var.hostname
+  name = local.name
 
-  default_ttl    = 0
+  default_ttl    = var.default_ttl
   http3          = true
   stale_if_error = true
 
@@ -48,38 +52,42 @@ resource "fastly_service_vcl" "app_service" {
     auto_loadbalance  = false
     healthcheck       = local.healthcheck_name
     keepalive_time    = 0
-    override_host     = var.hostname
+    override_host     = local.ssl_hostname
     port              = 443
     max_conn          = 500
     min_tls_version   = "1.2"
     shield            = var.shield_region
     ssl_ca_cert       = var.backend_ca_cert
-    ssl_cert_hostname = var.hostname
-    ssl_sni_hostname  = var.hostname
+    ssl_cert_hostname = local.ssl_hostname
+    ssl_sni_hostname  = local.ssl_hostname
     use_ssl           = true
   }
 
   # Healthcheck
   healthcheck {
     name = local.healthcheck_name
-    host = var.hostname
+    host = local.healthcheck_host
     path = var.healthcheck_path
 
-    check_interval = 60000
-    initial        = 1
-    method         = var.healthcheck_method
-    threshold      = 1
-    timeout        = 5000
-    window         = 2
+    check_interval    = 60000
+    expected_response = var.healthcheck_expected_response
+    initial           = 1
+    method            = var.healthcheck_method
+    threshold         = 1
+    timeout           = 5000
+    window            = 2
   }
 
   # Datadog logging
-  logging_datadog {
-    name   = "Mastodon Datadog EU"
-    format = local.datadog_format
-    token  = var.datadog_token
+  dynamic "logging_datadog" {
+    for_each = var.datadog_token != "" ? [1] : []
+    content {
+      name   = "Mastodon Datadog EU"
+      format = local.datadog_format
+      token  = var.datadog_token
 
-    region = "EU"
+      region = "EU"
+    }
   }
 
   # Force TLS/HSTS settings

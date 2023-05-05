@@ -3,6 +3,12 @@ variable "hostname" {
   type        = string
 }
 
+variable "default_ttl" {
+  description = "The default Time-to-live (TTL) for requests"
+  type        = number
+  default     = 0
+}
+
 variable "backend_name" {
   description = "Optional name for the backend."
   type        = string
@@ -23,6 +29,12 @@ variable "backend_ca_cert" {
 variable "shield_region" {
   description = "Which Fastly shield region to use. Should correspond with the shield code."
   type        = string
+}
+
+variable "healthcheck_host" {
+  description = "Host to ping for healthcheck. Defaults to hostname."
+  type        = string
+  default     = ""
 }
 
 variable "healthcheck_name" {
@@ -48,9 +60,16 @@ variable "healthcheck_method" {
   }
 }
 
+variable "healthcheck_expected_response" {
+  description = "Response to expect from a healthy endpoint."
+  type        = number
+  default     = 200
+}
+
 variable "datadog_token" {
   description = "API key from Datadog."
   type        = string
+  default     = ""
   sensitive   = true
 }
 
