@@ -20,10 +20,34 @@ variable "backend_address" {
   type        = string
 }
 
+variable "backend_port" {
+  description = "The port number on which the Backend responds."
+  type        = number
+  default     = 443
+}
+
 variable "backend_ca_cert" {
   description = "CA cert to use when connecting to the backend."
   type        = string
   sensitive   = true
+}
+
+variable "max_conn" {
+  description = "Maximum number of connections for the Backend."
+  type        = number
+  default     = 500
+}
+
+variable "min_tls_version" {
+  description = "Minimum allowed TLS version on SSL connections to the backend."
+  type        = string
+  default     = "1.2"
+}
+
+variable "use_ssl" {
+  description = "Whether or not to use SSL to reach the Backend."
+  type        = bool
+  default     = true
 }
 
 variable "shield_region" {
@@ -58,6 +82,18 @@ variable "healthcheck_method" {
     condition     = contains(["CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT", "TRACE"], var.healthcheck_method)
     error_message = "Healthcheck method must be a valid HTTP method"
   }
+}
+
+variable "force_tls_hsts" {
+  description = "Force TLS and HTTP Strict Transport Security (HSTS) to ensure that every request is secure."
+  type        = bool
+  default     = true
+}
+
+variable "hsts_duration" {
+  description = "Number of seconds for the client to remember only to use HTTPS."
+  type        = number
+  default     = 31557600
 }
 
 variable "healthcheck_expected_response" {
