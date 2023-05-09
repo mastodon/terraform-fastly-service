@@ -140,6 +140,7 @@ variable "vcl_snippets" {
     type     = string
     priority = optional(number, 100)
   }))
+  default = []
 }
 
 # IP block lists
