@@ -109,6 +109,17 @@ variable "datadog_token" {
   sensitive   = true
 }
 
+variable "datadog_region" {
+  description = "The region that log data will be sent to."
+  type        = string
+  default     = "EU"
+
+  validation {
+    condition     = contains(["US", "EU"], var.datadog_region)
+    error_message = "Datadog region must be either US or EU."
+  }
+}
+
 # IP block lists
 
 variable "ip_blocklist" {

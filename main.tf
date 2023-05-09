@@ -82,11 +82,11 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "logging_datadog" {
     for_each = var.datadog_token != "" ? [1] : []
     content {
-      name   = "Mastodon Datadog EU"
+      name   = "Mastodon Datadog ${var.datadog_region}"
       format = local.datadog_format
       token  = var.datadog_token
 
-      region = "EU"
+      region = var.datadog_region
     }
   }
 
