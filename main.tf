@@ -142,7 +142,7 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
-  # Custom VCL snippets
+  # Redirect www
 
   snippet {
     name     = "Redirect www to APEX - ERROR"
@@ -158,6 +158,7 @@ resource "fastly_service_vcl" "app_service" {
     priority = 100
   }
 
+  # Cache control for static files
   snippet {
     name     = "Add cache-control headers for static files"
     content  = local.vcl_static_cache_control
@@ -165,38 +166,56 @@ resource "fastly_service_vcl" "app_service" {
     priority = 100
   }
 
-  snippet {
-    name     = "Custom 503 error page"
-    content  = local.vcl_custom_error
-    type     = "error"
-    priority = 100
+  # Mastodon official error page
+
+  dynamic "snippet" {
+    for_each = var.mastodon_error_page ? [1] : []
+    content {
+      name     = "Custom 503 error page"
+      content  = local.vcl_custom_error
+      type     = "error"
+      priority = 100
+    }
   }
 
-  snippet {
-    name     = "Redirect 503 to custom error page"
-    content  = local.vcl_custom_error_redirect
-    type     = "fetch"
-    priority = 100
+  dynamic "snippet" {
+    for_each = var.mastodon_error_page ? [1] : []
+    content {
+      name     = "Redirect 503 to custom error page"
+      content  = local.vcl_custom_error_redirect
+      type     = "fetch"
+      priority = 100
+    }
   }
 
-  snippet {
-    name     = "Enable tarpit"
-    content  = local.vcl_tarpit
-    type     = "deliver"
-    priority = 100
+  # Tarpit
+
+  dynamic "snippet" {
+    for_each = var.tarpit ? [1] : []
+    content {
+      name     = "Enable tarpit"
+      content  = local.vcl_tarpit
+      type     = "deliver"
+      priority = 100
+    }
   }
+
+  dynamic "snippet" {
+    for_each = var.tarpit ? [1] : []
+    content {
+      name     = "Custom header for source 403"
+      content  = local.vcl_backend_403
+      type     = "fetch"
+      priority = 100
+    }
+  }
+
+  # Anti-DDoS measures
 
   snippet {
     name     = "Block DDOS JA3"
     content  = local.vcl_block_ddos_ja3
     type     = "recv"
-    priority = 100
-  }
-
-  snippet {
-    name     = "Custom header for source 403"
-    content  = local.vcl_backend_403
-    type     = "fetch"
     priority = 100
   }
 
@@ -206,6 +225,17 @@ resource "fastly_service_vcl" "app_service" {
   #  type     = "revc"
   #  priority = 100
   #}
+
+  # User-defined custom VCL snippets
+  dynamic "snippet" {
+    for_each = var.vcl_snippets
+    content = {
+      content  = snippet.value["content"]
+      name     = snippet.value["name"]
+      type     = snippet.value["type"]
+      priority = snippet.value["priority"]
+    }
+  }
 
   # Additional products
   product_enablement {

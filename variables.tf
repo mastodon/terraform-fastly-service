@@ -120,6 +120,28 @@ variable "datadog_region" {
   }
 }
 
+variable "mastodon_error_page" {
+  description = "Whether to enable the official mastodon error page."
+  type        = bool
+  default     = true
+}
+
+variable "tarpit" {
+  description = "Whether to enable tarpit (anti-abuse rate limiting)."
+  type        = bool
+  default     = true
+}
+
+variable "vcl_snippets" {
+  description = "Additional custom VCL snippets to add to the service."
+  type        = list(object({
+    content  = string
+    name     = string
+    type     = string
+    priority = optional(number, 100)
+  }))
+}
+
 # IP block lists
 
 variable "ip_blocklist" {
