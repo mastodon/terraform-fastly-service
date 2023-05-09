@@ -229,7 +229,7 @@ resource "fastly_service_vcl" "app_service" {
   # User-defined custom VCL snippets
   dynamic "snippet" {
     for_each = var.vcl_snippets
-    content = {
+    content {
       content  = snippet.value["content"]
       name     = snippet.value["name"]
       type     = snippet.value["type"]

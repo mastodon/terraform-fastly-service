@@ -1,6 +1,18 @@
+variable "name" {
+  description = "Name of the fastly service (defaults to hostname)."
+  type        = string
+  default     = ""
+}
+
 variable "hostname" {
   description = "Hostname the service points to."
   type        = string
+}
+
+variable "ssl_hostname" {
+  description = "Hostname to use for SSL verification (if different from 'hostname')."
+  type        = string
+  default     = ""
 }
 
 variable "default_ttl" {
