@@ -379,8 +379,9 @@ resource "fastly_service_acl_entries" "ip_blocklist_entries" {
   for_each = {
     for d in fastly_service_vcl.app_service.acl : d.name => d if d.name == var.ip_blocklist_acl_name
   }
-  service_id = fastly_service_vcl.app_service.id
-  acl_id     = each.value.acl_id
+  service_id     = fastly_service_vcl.app_service.id
+  acl_id         = each.value.acl_id
+  manage_entries = true
 
   dynamic "entry" {
     for_each = var.ip_blocklist
@@ -401,6 +402,7 @@ resource "fastly_service_dictionary_items" "as_blocklist_entries" {
   }
   service_id    = fastly_service_vcl.app_service.id
   dictionary_id = each.value.dictionary_id
+  manage_items  = true
 
   items = { for i in var.as_blocklist : i => "block" }
 }
@@ -411,6 +413,7 @@ resource "fastly_service_dictionary_items" "as_request_blocklist_entries" {
   }
   service_id    = fastly_service_vcl.app_service.id
   dictionary_id = each.value.dictionary_id
+  manage_items  = true
 
   items = { for i in var.as_request_blocklist : i => "block" }
 }
