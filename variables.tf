@@ -158,17 +158,23 @@ variable "vcl_snippets" {
 # IP block lists
 
 variable "ip_blocklist" {
-  description = "List of IP CIDR blocks to deny access."
+  description = "Whether to enable the IP Blocklist ACL. Must be managed externally, unless ip_blocklist_items is given."
+  type        = bool
+  default     = true
+}
+
+variable "ip_blocklist_items" {
+  description = "List of IP CIDRs to block. This will make the ACL object 'managed' by terraform."
   type        = list(string)
   default     = []
 
   validation {
-    condition     = can([for s in var.ip_blocklist : regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", s)])
+    condition     = can([for s in var.ip_blocklist_items : regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", s)])
     error_message = "Each list item must be in a CIDR block format. Example: [\"10.106.108.0/25\"]."
   }
 }
 
-variable "ip_blocklist_acl_name" {
+variable "ip_blocklist_name" {
   description = "Name for the ACL responsible for holding all the blocked IP ranges."
   type        = string
   default     = "IP Block list"
@@ -177,7 +183,13 @@ variable "ip_blocklist_acl_name" {
 # AS block lists
 
 variable "as_blocklist" {
-  description = "List of Autonomous Systems (AS) to block."
+  description = "Whether to enable the AS blocklist ACLs. Must be managed externally, unless as_blocklist_items is given."
+  type        = bool
+  default     = true
+}
+
+variable "as_blocklist_items" {
+  description = "List of Autonomous Systems (AS) to block. This will make the Dictionary object 'managed' by terraform."
   type        = list(number)
   default     = []
 }
@@ -185,11 +197,11 @@ variable "as_blocklist" {
 variable "as_blocklist_name" {
   description = "Name of the AS blocklist"
   type        = string
-  default     = "Blocked AS Numbers"
+  default     = "AS Blocklist"
 }
 
-variable "as_request_blocklist" {
-  description = "List of Autonomous Systems (AS) to block from making /api or /explore requests."
+variable "as_request_blocklist_items" {
+  description = "List of Autonomous Systems (AS) to block from making /api or /explore requests. This will make the Dictionary object 'managed' by terraform."
   type        = list(number)
   default     = []
 }
@@ -197,7 +209,27 @@ variable "as_request_blocklist" {
 variable "as_request_blocklist_name" {
   description = "Name of the AS request blocklist"
   type        = string
-  default     = "Blocked AS Numbers client requests"
+  default     = "AS Requests Blocklist"
+}
+
+# JA3 block list
+
+variable "ja3_blocklist" {
+  description = "Whether to enable the JA3 Blocklist Dictionary. Must be managed externally, unless ja3_blocklist_items is given."
+  type        = bool
+  default     = true
+}
+
+variable "ja3_blocklist_items" {
+  description = "List of JA3 hashes to block. This will make the Dictionary object 'managed' by terraform."
+  type        = list(string)
+  default     = []
+}
+
+variable "ja3_blocklist_name" {
+  description = "Name for the Dictionray responsible for holding all the blocked JA3 hashes."
+  type        = string
+  default     = "JA3 Blocklist"
 }
 
 # Signal Sciences
