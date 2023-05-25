@@ -21,7 +21,6 @@ locals {
   vcl_apex_error            = templatefile("${path.module}/vcl/apex_error.vcl", { hostname = var.hostname })
   vcl_apex_redirect         = templatefile("${path.module}/vcl/apex_redirect.vcl", { hostname = var.hostname })
   vcl_backend_403           = file("${path.module}/vcl/backend_403.vcl")
-  vcl_block_ddos_ja3        = file("${path.module}/vcl/block_ddos_ja3.vcl")
   vcl_block_user_agents     = file("${path.module}/vcl/block_user_agents.vcl")
   vcl_custom_error_redirect = file("${path.module}/vcl/custom_error_redirect.vcl")
   vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", { hostname = var.hostname })
@@ -58,7 +57,8 @@ resource "fastly_service_vcl" "app_service" {
     min_tls_version   = var.min_tls_version
     shield            = var.shield_region
     ssl_ca_cert       = var.backend_ca_cert
-    ssl_cert_hostname = local.ssl_hostname
+    ssl_check_cert    = var.backend_ssl_check
+    ssl_cert_hostname = var.backend_ssl_check ? local.ssl_hostname : ""
     ssl_sni_hostname  = local.ssl_hostname
     use_ssl           = var.use_ssl
   }
@@ -82,7 +82,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "logging_datadog" {
     for_each = var.datadog_token != "" ? [1] : []
     content {
-      name   = "Mastodon Datadog ${var.datadog_region}"
+      name   = "Datadog ${var.datadog_region}"
       format = local.datadog_format
       token  = var.datadog_token
 
@@ -208,15 +208,6 @@ resource "fastly_service_vcl" "app_service" {
       type     = "fetch"
       priority = 100
     }
-  }
-
-  # Anti-DDoS measures
-
-  snippet {
-    name     = "Block DDOS JA3"
-    content  = local.vcl_block_ddos_ja3
-    type     = "recv"
-    priority = 100
   }
 
   #snippet {

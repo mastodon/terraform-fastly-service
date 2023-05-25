@@ -38,6 +38,12 @@ variable "backend_port" {
   default     = 443
 }
 
+variable "backend_ssl_check" {
+  description = "Be strict about checking SSL certs when connecting to the backend."
+  type        = bool
+  default     = true
+}
+
 variable "backend_ca_cert" {
   description = "CA cert to use when connecting to the backend."
   type        = string
