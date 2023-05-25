@@ -152,7 +152,7 @@ variable "tarpit" {
 
 variable "vcl_snippets" {
   description = "Additional custom VCL snippets to add to the service."
-  type        = list(object({
+  type = list(object({
     content  = string
     name     = string
     type     = string
