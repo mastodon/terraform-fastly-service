@@ -1,0 +1,23 @@
+{
+  "applinks":{
+    "details":[
+      {
+        "appIDs":[
+          "5Z4GVSS33P.org.joinmastodon.app",
+          "9JTH7AWHE6.com.tapbots.Ivory"
+        ],
+        "components":[
+          {
+            "/":"/@*"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials":{
+    "apps":[
+      "9JTH7AWHE6.com.tapbots.Ivory",
+      "5Z4GVSS33P.org.joinmastodon.app"
+    ]
+  }
+}
