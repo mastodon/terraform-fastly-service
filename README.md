@@ -80,5 +80,9 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_active_version"></a> [active\_version](#output\_active\_version) | The currently active version of the Fastly Service |
+| <a name="output_as_blocklist_dictionary_id"></a> [as\_blocklist\_dictionary\_id](#output\_as\_blocklist\_dictionary\_id) | ID of the AS blocklist dictionary |
+| <a name="output_as_request_blocklist_dictionary_id"></a> [as\_request\_blocklist\_dictionary\_id](#output\_as\_request\_blocklist\_dictionary\_id) | ID of the AS request blocklist dictionary |
 | <a name="output_cloned_version"></a> [cloned\_version](#output\_cloned\_version) | The latest cloned version by the provider |
 | <a name="output_id"></a> [id](#output\_id) | The ID of this resource |
+| <a name="output_ip_blocklist_acl_id"></a> [ip\_blocklist\_acl\_id](#output\_ip\_blocklist\_acl\_id) | ID of the IP blocklist ACL |
+| <a name="output_ja3_blocklist_dictionary_id"></a> [ja3\_blocklist\_dictionary\_id](#output\_ja3\_blocklist\_dictionary\_id) | ID of the JA3 blocklist dictionary |
