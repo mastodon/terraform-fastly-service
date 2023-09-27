@@ -149,6 +149,8 @@ resource "fastly_service_vcl" "app_service" {
     content {
       name = "Collect Globeviz data"
       content = local.vcl_globeviz
+      type = "init"
+      priority = 100
     }
   }
 
