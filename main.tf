@@ -143,17 +143,6 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
-  # Fastly Globeviz integration
-  dynamic "vcl" {
-    for_each = var.globeviz_service != "" ? [1] : []
-    content {
-      name = "Collect Globeviz data"
-      content = local.vcl_globeviz
-      type = "init"
-      priority = 100
-    }
-  }
-
   # Redirect www
 
   snippet {
@@ -218,6 +207,17 @@ resource "fastly_service_vcl" "app_service" {
       name     = "Custom header for source 403"
       content  = local.vcl_backend_403
       type     = "fetch"
+      priority = 100
+    }
+  }
+
+  # Fastly Globeviz integration
+  dynamic "snippet" {
+    for_each = var.globeviz_service != "" ? [1] : []
+    content {
+      name     = "Collect Globeviz data"
+      content  = local.vcl_globeviz
+      type     = "init"
       priority = 100
     }
   }
