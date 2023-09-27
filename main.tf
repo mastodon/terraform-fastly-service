@@ -26,6 +26,7 @@ locals {
   vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", { hostname = var.hostname })
   vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
+  vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
 }
 
 resource "fastly_service_vcl" "app_service" {
@@ -139,6 +140,15 @@ resource "fastly_service_vcl" "app_service" {
     content {
       name    = "sigsci_config"
       content = local.vcl_sigsci_config
+    }
+  }
+
+  # Fastly Globeviz integration
+  dynamic "vcl" {
+    for_each = var.globeviz_service != "" ? [1] : []
+    content {
+      name = "Collect Globeviz data"
+      content = local.vcl_globeviz
     }
   }
 

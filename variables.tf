@@ -251,3 +251,11 @@ variable "signal_science_shared_key" {
   type        = string
   default     = ""
 }
+
+# Globeviz
+
+variable "globeviz_service" {
+  description = "Enables sending traffic information to Fastly's Globeviz page using the given service."
+  type        = string
+  default     = ""
+}
