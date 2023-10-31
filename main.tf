@@ -93,7 +93,7 @@ resource "fastly_service_vcl" "app_service" {
   }
 
   # Fastly global visualization logging
-  dynamic "logging_fastly" {
+  dynamic "logging_https" {
     for_each = var.fastly_globeviz_url != "" ? [1] : []
     content {
       name = "fastly-globeviz"
