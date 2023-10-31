@@ -9,6 +9,7 @@ locals {
   edge_security_dict_name = "Edge_Security"
 
   datadog_format = file("${path.module}/logging/datadog.json")
+  fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
 
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
 
@@ -88,6 +89,19 @@ resource "fastly_service_vcl" "app_service" {
       token  = var.datadog_token
 
       region = var.datadog_region
+    }
+  }
+
+  # Fastly global visualization logging
+  dynamic "logging_fastly" {
+    for_each = var.fastly_globeviz_url != "" ? [1] : []
+    content {
+      name = "fastly-globeviz"
+      url  = var.fastly_globeviz_url
+
+      content_type = "text/plain"
+      format       = local.fastly_globeviz_format
+      method       = "POST"
     }
   }
 

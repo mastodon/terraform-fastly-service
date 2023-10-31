@@ -138,6 +138,12 @@ variable "datadog_region" {
   }
 }
 
+variable "fastly_globeviz_url" {
+  description = "URL to send traffic data for fastly for their Global Visualization page"
+  type        = string
+  default     = ""
+}
+
 variable "mastodon_error_page" {
   description = "Whether to enable the official mastodon error page."
   type        = bool
