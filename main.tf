@@ -100,7 +100,6 @@ resource "fastly_service_vcl" "app_service" {
       url  = var.fastly_globeviz_url
 
       content_type = "text/plain"
-      format       = local.fastly_globeviz_format
       method       = "POST"
     }
   }
