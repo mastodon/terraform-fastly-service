@@ -102,6 +102,7 @@ resource "fastly_service_vcl" "app_service" {
 
       content_type = "text/plain"
       method       = "POST"
+      placement    = "none"
     }
   }
 
