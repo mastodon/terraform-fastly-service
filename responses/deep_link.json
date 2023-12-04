@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.joinmastodon.android",
+      "sha256_cert_fingerprints": [
+        "2D:3E:76:FC:B0:BA:31:3D:C0:5E:53:72:83:D4:CA:2F:3E:DD:B3:1B:F9:4D:0F:7E:73:33:C3:BA:63:14:5F:8A"
+      ]
+    }
+  }
+]
