@@ -12,6 +12,7 @@ locals {
   fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
 
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
+  deep_link_response         = file("${path.module}/responses/deep_link.json")
 
   vcl_main = file("${path.module}/vcl/main.vcl")
   vcl_sigsci_config = templatefile("${path.module}/vcl/sigsci_config.vcl", {
@@ -283,6 +284,25 @@ resource "fastly_service_vcl" "app_service" {
 
   dictionary {
     name = local.edge_security_dict_name
+  }
+
+  # Android deep link
+
+  condition {
+    name      = "Android Deep Link is requested"
+    statement = "req.url.path == \"/.well-known/assetlinks.json\""
+    type      = "REQUEST"
+    priority  = 10
+  }
+
+  response_object {
+    name = "Android Deep Link"
+
+    content           = local.deep_link_response
+    content_type      = "application/json"
+    request_condition = "Android Deep Link is requested"
+    response          = "OK"
+    status            = 200
   }
 
   # IP Blocklist settings
