@@ -97,8 +97,9 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "logging_https" {
     for_each = var.fastly_globeviz_url != "" ? [1] : []
     content {
-      name = "fastly-globeviz"
-      url  = var.fastly_globeviz_url
+      name   = "fastly-globeviz"
+      format = local.fastly_globeviz_format
+      url    = var.fastly_globeviz_url
 
       content_type = "text/plain"
       method       = "POST"
