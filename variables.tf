@@ -120,6 +120,12 @@ variable "healthcheck_expected_response" {
   default     = 200
 }
 
+variable "datadog" {
+  description = "Whether to send logging info to Datadog"
+  type        = bool
+  default     = false
+}
+
 variable "datadog_token" {
   description = "API key from Datadog."
   type        = string
