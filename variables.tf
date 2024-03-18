@@ -50,6 +50,18 @@ variable "backend_ca_cert" {
   sensitive   = true
 }
 
+variable "backend_first_byte_timeout" {
+  description = "How long to wait for the first bytes in milliseconds."
+  type        = number
+  default     = 15000
+}
+
+variable "backend_between_bytes_timeout" {
+  description = "How long to wait between bytes in milliseconds."
+  type        = number
+  default     = 10000
+}
+
 variable "max_conn" {
   description = "Maximum number of connections for the Backend."
   type        = number

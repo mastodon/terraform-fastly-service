@@ -8,7 +8,7 @@ Contains much of the logic and default configuration that exists across all offi
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 4.1.0 |
 
 ## Providers
@@ -42,7 +42,9 @@ No modules.
 | <a name="input_as_request_blocklist_items"></a> [as\_request\_blocklist\_items](#input\_as\_request\_blocklist\_items) | List of Autonomous Systems (AS) to block from making /api or /explore requests. This will make the Dictionary object 'managed' by terraform. | `list(number)` | `[]` | no |
 | <a name="input_as_request_blocklist_name"></a> [as\_request\_blocklist\_name](#input\_as\_request\_blocklist\_name) | Name of the AS request blocklist | `string` | `"AS Requests Blocklist"` | no |
 | <a name="input_backend_address"></a> [backend\_address](#input\_backend\_address) | Address to use for connecting to the backend. Can be a hostname or an IP address. | `string` | n/a | yes |
+| <a name="input_backend_between_bytes_timeout"></a> [backend\_between\_bytes\_timeout](#input\_backend\_between\_bytes\_timeout) | How long to wait between bytes in milliseconds. | `number` | `10000` | no |
 | <a name="input_backend_ca_cert"></a> [backend\_ca\_cert](#input\_backend\_ca\_cert) | CA cert to use when connecting to the backend. | `string` | n/a | yes |
+| <a name="input_backend_first_byte_timeout"></a> [backend\_first\_byte\_timeout](#input\_backend\_first\_byte\_timeout) | How long to wait for the first bytes in milliseconds. | `number` | `15000` | no |
 | <a name="input_backend_name"></a> [backend\_name](#input\_backend\_name) | Optional name for the backend. | `string` | `""` | no |
 | <a name="input_backend_port"></a> [backend\_port](#input\_backend\_port) | The port number on which the Backend responds. | `number` | `443` | no |
 | <a name="input_backend_ssl_check"></a> [backend\_ssl\_check](#input\_backend\_ssl\_check) | Be strict about checking SSL certs when connecting to the backend. | `bool` | `true` | no |
