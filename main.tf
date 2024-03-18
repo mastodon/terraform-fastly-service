@@ -51,19 +51,21 @@ resource "fastly_service_vcl" "app_service" {
     name    = local.backend_name
     address = var.backend_address
 
-    auto_loadbalance  = false
-    healthcheck       = local.healthcheck_name
-    keepalive_time    = 0
-    override_host     = local.ssl_hostname
-    port              = var.backend_port
-    max_conn          = var.max_conn
-    min_tls_version   = var.min_tls_version
-    shield            = var.shield_region
-    ssl_ca_cert       = var.backend_ca_cert
-    ssl_check_cert    = var.backend_ssl_check
-    ssl_cert_hostname = var.backend_ssl_check ? local.ssl_hostname : ""
-    ssl_sni_hostname  = local.ssl_hostname
-    use_ssl           = var.use_ssl
+    auto_loadbalance      = false
+    between_bytes_timeout = var.backend_between_bytes_timeout
+    first_byte_timeout    = var.backend_first_byte_timeout
+    healthcheck           = local.healthcheck_name
+    keepalive_time        = 0
+    override_host         = local.ssl_hostname
+    port                  = var.backend_port
+    max_conn              = var.max_conn
+    min_tls_version       = var.min_tls_version
+    shield                = var.shield_region
+    ssl_ca_cert           = var.backend_ca_cert
+    ssl_check_cert        = var.backend_ssl_check
+    ssl_cert_hostname     = var.backend_ssl_check ? local.ssl_hostname : ""
+    ssl_sni_hostname      = local.ssl_hostname
+    use_ssl               = var.use_ssl
   }
 
   # Healthcheck
