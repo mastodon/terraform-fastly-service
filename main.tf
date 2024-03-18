@@ -83,7 +83,7 @@ resource "fastly_service_vcl" "app_service" {
 
   # Datadog logging
   dynamic "logging_datadog" {
-    for_each = var.datadog_token != "" ? [1] : []
+    for_each = var.datadog_region != "" ? [1] : []
     content {
       name   = "Datadog ${var.datadog_region}"
       format = local.datadog_format
