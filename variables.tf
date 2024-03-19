@@ -185,6 +185,17 @@ variable "vcl_snippets" {
   default = []
 }
 
+variable "product_enablement" {
+  description = "Which additional Fastly products to enable for this service."
+  type = object({
+    brotli_compression = optional(bool, false)
+    domain_inspector   = optional(bool, false)
+    image_optimizer    = optional(bool, false)
+    origin_inspector   = optional(bool, false)
+    websockets         = optional(bool, false)
+  })
+}
+
 # IP block lists
 
 variable "ip_blocklist" {
