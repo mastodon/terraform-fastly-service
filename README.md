@@ -9,13 +9,13 @@ Contains much of the logic and default configuration that exists across all offi
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 4.1.0 |
+| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 5.7.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | >= 4.1.0 |
+| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | >= 5.7.1 |
 
 ## Modules
 
@@ -72,6 +72,7 @@ No modules.
 | <a name="input_max_conn"></a> [max\_conn](#input\_max\_conn) | Maximum number of connections for the Backend. | `number` | `500` | no |
 | <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Minimum allowed TLS version on SSL connections to the backend. | `string` | `"1.2"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the fastly service (defaults to hostname). | `string` | `""` | no |
+| <a name="input_product_enablement"></a> [product\_enablement](#input\_product\_enablement) | Which additional Fastly products to enable for this service. | <pre>object({<br>    brotli_compression = optional(bool, false)<br>    domain_inspector   = optional(bool, false)<br>    image_optimizer    = optional(bool, false)<br>    origin_inspector   = optional(bool, false)<br>    websockets         = optional(bool, false)<br>  })</pre> | n/a | yes |
 | <a name="input_shield_region"></a> [shield\_region](#input\_shield\_region) | Which Fastly shield region to use. Should correspond with the shield code. | `string` | n/a | yes |
 | <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | `""` | no |
 | <a name="input_signal_science_shared_key"></a> [signal\_science\_shared\_key](#input\_signal\_science\_shared\_key) | Shared key to use when integrating with Signal Sciences | `string` | `""` | no |
