@@ -194,6 +194,13 @@ variable "product_enablement" {
     origin_inspector   = optional(bool, false)
     websockets         = optional(bool, false)
   })
+  default = {
+    brotli_compression = false
+    domain_inspector   = false
+    image_optimizer    = false
+    origin_inspector   = false
+    websockets         = false
+  }
 }
 
 # IP block lists
