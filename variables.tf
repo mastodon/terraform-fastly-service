@@ -185,6 +185,12 @@ variable "vcl_snippets" {
   default = []
 }
 
+variable "gzip_default_policy" {
+  description = "Whether to enable Fastly's default gzip policy"
+  type        = bool
+  default     = false
+}
+
 variable "product_enablement" {
   description = "Which additional Fastly products to enable for this service."
   type = object({
