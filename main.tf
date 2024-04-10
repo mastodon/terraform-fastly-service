@@ -140,6 +140,20 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
+  # Dynamic compression
+  dynamic "header" {
+    for_each = var.dynamic_compression ? [1] : []
+    content {
+      action      = "set"
+      destination = "http.X-Compress-Hint"
+      name        = "Dynamic Compression"
+      type        = "response"
+
+      priority = 100
+      source   = "\"on\""
+    }
+  }
+
   # Signal Sciences integration
   # We need to enable a custom main VCL file in order to do what we need here
 

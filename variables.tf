@@ -191,6 +191,12 @@ variable "gzip_default_policy" {
   default     = false
 }
 
+variable "dynamic_compression" {
+  description = "Whether to dynamically compress responses before sending them"
+  type        = bool
+  default     = true
+}
+
 variable "product_enablement" {
   description = "Which additional Fastly products to enable for this service."
   type = object({

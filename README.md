@@ -52,6 +52,7 @@ No modules.
 | <a name="input_datadog_region"></a> [datadog\_region](#input\_datadog\_region) | The region that log data will be sent to. | `string` | `"EU"` | no |
 | <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | `""` | no |
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
+| <a name="input_dynamic_compression"></a> [dynamic\_compression](#input\_dynamic\_compression) | Whether to dynamically compress responses before sending them | `bool` | `true` | no |
 | <a name="input_fastly_globeviz_url"></a> [fastly\_globeviz\_url](#input\_fastly\_globeviz\_url) | URL to send traffic data for fastly for their Global Visualization page | `string` | `""` | no |
 | <a name="input_force_tls_hsts"></a> [force\_tls\_hsts](#input\_force\_tls\_hsts) | Force TLS and HTTP Strict Transport Security (HSTS) to ensure that every request is secure. | `bool` | `true` | no |
 | <a name="input_globeviz_service"></a> [globeviz\_service](#input\_globeviz\_service) | Enables sending traffic information to Fastly's Globeviz page using the given service. | `string` | `""` | no |
