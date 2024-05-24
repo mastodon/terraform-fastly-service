@@ -72,7 +72,7 @@ resource "fastly_service_vcl" "app_service" {
 
   # Media backend
   dynamic "backend" {
-    for_each = var.media_backend["address"] ? [1] : []
+    for_each = var.media_backend["address"] != "" ? [1] : []
     content {
       address = var.media_backend["address"]
       name    = var.media_backend["name"] ? var.media_backend["name"] : "${local.backend_name} - media"
@@ -85,7 +85,7 @@ resource "fastly_service_vcl" "app_service" {
       port                  = var.backend_port
       max_conn              = var.max_conn
       min_tls_version       = var.min_tls_version
-      request_condition     = var.media_backend["condition"] ? "Media backend condition" : ""
+      request_condition     = var.media_backend["condition"] != "" ? "Media backend condition" : ""
       ssl_check_cert        = var.backend_ssl_check
       ssl_cert_hostname     = var.backend_ssl_check ? local.ssl_hostname : ""
       ssl_sni_hostname      = var.media_backend["address"]
@@ -94,7 +94,7 @@ resource "fastly_service_vcl" "app_service" {
   }
 
   dynamic "condition" {
-    for_each = var.media_backend["condition"] ? [1] : []
+    for_each = var.media_backend["condition"] != "" ? [1] : []
     content {
       name      = "Media backend condition"
       statement = var.media_backend["condition"]
