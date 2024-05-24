@@ -9,6 +9,12 @@ variable "hostname" {
   type        = string
 }
 
+variable "domains" {
+  description = "Additional domains to assign to this service"
+  type        = list(string)
+  default     = []
+}
+
 variable "ssl_hostname" {
   description = "Hostname to use for SSL verification (if different from 'hostname')."
   type        = string
@@ -83,6 +89,16 @@ variable "use_ssl" {
 variable "shield_region" {
   description = "Which Fastly shield region to use. Should correspond with the shield code."
   type        = string
+}
+
+variable "media_backend" {
+  description = "Additional backend to use for service media files"
+  type = object({
+    address   = string
+    name      = optional(string, "")
+    condition = optional(string, "")
+  })
+  default = { address = "" }
 }
 
 variable "healthcheck_host" {
@@ -162,6 +178,18 @@ variable "fastly_globeviz_url" {
   default     = ""
 }
 
+variable "apex_redirect" {
+  description = "Enable Fastly Apex redirection"
+  type        = bool
+  default     = true
+}
+
+variable "static_cache_control" {
+  description = "Add cache-control headers for static files"
+  type        = bool
+  default     = true
+}
+
 variable "mastodon_error_page" {
   description = "Whether to enable the official mastodon error page."
   type        = bool
@@ -170,6 +198,12 @@ variable "mastodon_error_page" {
 
 variable "tarpit" {
   description = "Whether to enable tarpit (anti-abuse rate limiting)."
+  type        = bool
+  default     = true
+}
+
+variable "apple_associated_domain" {
+  description = "Enable associated domain for Apple apps"
   type        = bool
   default     = true
 }
@@ -183,6 +217,10 @@ variable "vcl_snippets" {
     priority = optional(number, 100)
   }))
   default = []
+}
+
+variable "edge_security" {
+  description = "Whether to enable the Edge Security blocklist."
 }
 
 variable "gzip_default_policy" {
