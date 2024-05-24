@@ -221,6 +221,8 @@ variable "vcl_snippets" {
 
 variable "edge_security" {
   description = "Whether to enable the Edge Security blocklist."
+  type        = bool
+  default     = true
 }
 
 variable "gzip_default_policy" {
