@@ -68,7 +68,7 @@ resource "fastly_service_vcl" "app_service" {
     ssl_ca_cert           = var.backend_ca_cert
     ssl_check_cert        = var.backend_ssl_check
     ssl_cert_hostname     = var.backend_ssl_check ? local.ssl_hostname : ""
-    ssl_sni_hostname      = var.backend_ssl_check ? local.ssl_hostname : ""
+    ssl_sni_hostname      = local.ssl_hostname
     use_ssl               = var.use_ssl
   }
 
