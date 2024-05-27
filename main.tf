@@ -75,7 +75,7 @@ resource "fastly_service_vcl" "app_service" {
     for_each = var.media_backend["address"] != "" ? [1] : []
     content {
       address = var.media_backend["address"]
-      name    = var.media_backend["name"] ? var.media_backend["name"] : "${local.backend_name} - media"
+      name    = var.media_backend["name"] != "" ? var.media_backend["name"] : "${local.backend_name} - media"
 
       auto_loadbalance      = false
       between_bytes_timeout = var.backend_between_bytes_timeout
