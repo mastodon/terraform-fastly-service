@@ -398,21 +398,27 @@ resource "fastly_service_vcl" "app_service" {
 
   # Android deep link
 
-  condition {
-    name      = "Android Deep Link is requested"
-    statement = "req.url.path == \"/.well-known/assetlinks.json\""
-    type      = "REQUEST"
-    priority  = 10
+  dynamic "condition" {
+    for_each = var.android_deep_link ? [1] : []
+    content {
+      name      = "Android Deep Link is requested"
+      statement = "req.url.path == \"/.well-known/assetlinks.json\""
+      type      = "REQUEST"
+      priority  = 10
+    }
   }
 
-  response_object {
-    name = "Android Deep Link"
+  dynamic "response_object" {
+    for_each = var.android_deep_link ? [1] : []
+    content {
+      name = "Android Deep Link"
 
-    content           = local.deep_link_response
-    content_type      = "application/json"
-    request_condition = "Android Deep Link is requested"
-    response          = "OK"
-    status            = 200
+      content           = local.deep_link_response
+      content_type      = "application/json"
+      request_condition = "Android Deep Link is requested"
+      response          = "OK"
+      status            = 200
+    }
   }
 
   # IP Blocklist settings

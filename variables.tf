@@ -172,6 +172,12 @@ variable "datadog_region" {
   }
 }
 
+variable "android_deep_link" {
+  description = "Enable assets for Android deep link"
+  type        = bool
+  default     = true
+}
+
 variable "fastly_globeviz_url" {
   description = "URL to send traffic data for fastly for their Global Visualization page"
   type        = string
