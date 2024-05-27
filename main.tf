@@ -87,7 +87,7 @@ resource "fastly_service_vcl" "app_service" {
       port                  = var.backend_port
       max_conn              = var.max_conn
       min_tls_version       = var.min_tls_version
-      request_condition     = var.media_backend["condition"] != "" ? "Media backend condition" : ""
+      request_condition     = var.media_backend["condition"] != "" ? var.media_backend["condition_name"] : ""
       ssl_check_cert        = var.media_backend["ssl_check"]
       ssl_cert_hostname     = var.media_backend["ssl_check"] ? local.media_ssl_hostname : ""
       ssl_sni_hostname      = var.media_backend["ssl_check"] ? local.media_ssl_hostname : ""
@@ -98,7 +98,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "condition" {
     for_each = var.media_backend["condition"] != "" ? [1] : []
     content {
-      name      = "Media backend condition"
+      name      = var.media_backend["condition_name"]
       statement = var.media_backend["condition"]
       type      = "REQUEST"
       priority  = 10

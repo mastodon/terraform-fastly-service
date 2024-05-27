@@ -94,11 +94,12 @@ variable "shield_region" {
 variable "media_backend" {
   description = "Additional backend to use for service media files"
   type = object({
-    address      = string
-    name         = optional(string, "")
-    condition    = optional(string, "")
-    ssl_check    = optional(bool, true)
-    ssl_hostname = optional(string, "")
+    address        = string
+    name           = optional(string, "")
+    condition      = optional(string, "")
+    condition_name = optional(string, "Media backend condition")
+    ssl_check      = optional(bool, true)
+    ssl_hostname   = optional(string, "")
   })
   default = { address = "" }
 }
