@@ -15,7 +15,7 @@ Contains much of the logic and default configuration that exists across all offi
 
 | Name | Version |
 |------|---------|
-| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | >= 5.7.1 |
+| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | 5.10.0 |
 
 ## Modules
 
@@ -36,6 +36,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_android_deep_link"></a> [android\_deep\_link](#input\_android\_deep\_link) | Enable assets for Android deep link | `bool` | `true` | no |
+| <a name="input_apex_redirect"></a> [apex\_redirect](#input\_apex\_redirect) | Enable Fastly Apex redirection | `bool` | `true` | no |
+| <a name="input_apple_associated_domain"></a> [apple\_associated\_domain](#input\_apple\_associated\_domain) | Enable associated domain for Apple apps | `bool` | `true` | no |
 | <a name="input_as_blocklist"></a> [as\_blocklist](#input\_as\_blocklist) | Whether to enable the AS blocklist ACLs. Must be managed externally, unless as\_blocklist\_items is given. | `bool` | `true` | no |
 | <a name="input_as_blocklist_items"></a> [as\_blocklist\_items](#input\_as\_blocklist\_items) | List of Autonomous Systems (AS) to block. This will make the Dictionary object 'managed' by terraform. | `list(number)` | `[]` | no |
 | <a name="input_as_blocklist_name"></a> [as\_blocklist\_name](#input\_as\_blocklist\_name) | Name of the AS blocklist | `string` | `"AS Blocklist"` | no |
@@ -52,7 +55,9 @@ No modules.
 | <a name="input_datadog_region"></a> [datadog\_region](#input\_datadog\_region) | The region that log data will be sent to. | `string` | `"EU"` | no |
 | <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | `""` | no |
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
+| <a name="input_domains"></a> [domains](#input\_domains) | Additional domains to assign to this service | `list(string)` | `[]` | no |
 | <a name="input_dynamic_compression"></a> [dynamic\_compression](#input\_dynamic\_compression) | Whether to dynamically compress responses before sending them | `bool` | `true` | no |
+| <a name="input_edge_security"></a> [edge\_security](#input\_edge\_security) | Whether to enable the Edge Security blocklist. | `bool` | `true` | no |
 | <a name="input_fastly_globeviz_url"></a> [fastly\_globeviz\_url](#input\_fastly\_globeviz\_url) | URL to send traffic data for fastly for their Global Visualization page | `string` | `""` | no |
 | <a name="input_force_tls_hsts"></a> [force\_tls\_hsts](#input\_force\_tls\_hsts) | Force TLS and HTTP Strict Transport Security (HSTS) to ensure that every request is secure. | `bool` | `true` | no |
 | <a name="input_globeviz_service"></a> [globeviz\_service](#input\_globeviz\_service) | Enables sending traffic information to Fastly's Globeviz page using the given service. | `string` | `""` | no |
@@ -72,6 +77,7 @@ No modules.
 | <a name="input_ja3_blocklist_name"></a> [ja3\_blocklist\_name](#input\_ja3\_blocklist\_name) | Name for the Dictionray responsible for holding all the blocked JA3 hashes. | `string` | `"JA3 Blocklist"` | no |
 | <a name="input_mastodon_error_page"></a> [mastodon\_error\_page](#input\_mastodon\_error\_page) | Whether to enable the official mastodon error page. | `bool` | `true` | no |
 | <a name="input_max_conn"></a> [max\_conn](#input\_max\_conn) | Maximum number of connections for the Backend. | `number` | `500` | no |
+| <a name="input_media_backend"></a> [media\_backend](#input\_media\_backend) | Additional backend to use for service media files | <pre>object({<br>    address        = string<br>    name           = optional(string, "")<br>    condition      = optional(string, "")<br>    condition_name = optional(string, "Media backend condition")<br>    ssl_check      = optional(bool, true)<br>    ssl_hostname   = optional(string, "")<br>  })</pre> | <pre>{<br>  "address": ""<br>}</pre> | no |
 | <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Minimum allowed TLS version on SSL connections to the backend. | `string` | `"1.2"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the fastly service (defaults to hostname). | `string` | `""` | no |
 | <a name="input_product_enablement"></a> [product\_enablement](#input\_product\_enablement) | Which additional Fastly products to enable for this service. | <pre>object({<br>    brotli_compression = optional(bool, false)<br>    domain_inspector   = optional(bool, false)<br>    image_optimizer    = optional(bool, false)<br>    origin_inspector   = optional(bool, false)<br>    websockets         = optional(bool, false)<br>  })</pre> | <pre>{<br>  "brotli_compression": false,<br>  "domain_inspector": false,<br>  "image_optimizer": false,<br>  "origin_inspector": false,<br>  "websockets": false<br>}</pre> | no |
@@ -79,6 +85,7 @@ No modules.
 | <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | `""` | no |
 | <a name="input_signal_science_shared_key"></a> [signal\_science\_shared\_key](#input\_signal\_science\_shared\_key) | Shared key to use when integrating with Signal Sciences | `string` | `""` | no |
 | <a name="input_ssl_hostname"></a> [ssl\_hostname](#input\_ssl\_hostname) | Hostname to use for SSL verification (if different from 'hostname'). | `string` | `""` | no |
+| <a name="input_static_cache_control"></a> [static\_cache\_control](#input\_static\_cache\_control) | Add cache-control headers for static files | `bool` | `true` | no |
 | <a name="input_tarpit"></a> [tarpit](#input\_tarpit) | Whether to enable tarpit (anti-abuse rate limiting). | `bool` | `true` | no |
 | <a name="input_use_ssl"></a> [use\_ssl](#input\_use\_ssl) | Whether or not to use SSL to reach the Backend. | `bool` | `true` | no |
 | <a name="input_vcl_snippets"></a> [vcl\_snippets](#input\_vcl\_snippets) | Additional custom VCL snippets to add to the service. | <pre>list(object({<br>    content  = string<br>    name     = string<br>    type     = string<br>    priority = optional(number, 100)<br>  }))</pre> | `[]` | no |

@@ -9,6 +9,12 @@ variable "hostname" {
   type        = string
 }
 
+variable "domains" {
+  description = "Additional domains to assign to this service"
+  type        = list(string)
+  default     = []
+}
+
 variable "ssl_hostname" {
   description = "Hostname to use for SSL verification (if different from 'hostname')."
   type        = string
@@ -85,6 +91,19 @@ variable "shield_region" {
   type        = string
 }
 
+variable "media_backend" {
+  description = "Additional backend to use for service media files"
+  type = object({
+    address        = string
+    name           = optional(string, "")
+    condition      = optional(string, "")
+    condition_name = optional(string, "Media backend condition")
+    ssl_check      = optional(bool, true)
+    ssl_hostname   = optional(string, "")
+  })
+  default = { address = "" }
+}
+
 variable "healthcheck_host" {
   description = "Host to ping for healthcheck. Defaults to hostname."
   type        = string
@@ -156,10 +175,28 @@ variable "datadog_region" {
   }
 }
 
+variable "android_deep_link" {
+  description = "Enable assets for Android deep link"
+  type        = bool
+  default     = true
+}
+
 variable "fastly_globeviz_url" {
   description = "URL to send traffic data for fastly for their Global Visualization page"
   type        = string
   default     = ""
+}
+
+variable "apex_redirect" {
+  description = "Enable Fastly Apex redirection"
+  type        = bool
+  default     = true
+}
+
+variable "static_cache_control" {
+  description = "Add cache-control headers for static files"
+  type        = bool
+  default     = true
 }
 
 variable "mastodon_error_page" {
@@ -174,6 +211,12 @@ variable "tarpit" {
   default     = true
 }
 
+variable "apple_associated_domain" {
+  description = "Enable associated domain for Apple apps"
+  type        = bool
+  default     = true
+}
+
 variable "vcl_snippets" {
   description = "Additional custom VCL snippets to add to the service."
   type = list(object({
@@ -183,6 +226,12 @@ variable "vcl_snippets" {
     priority = optional(number, 100)
   }))
   default = []
+}
+
+variable "edge_security" {
+  description = "Whether to enable the Edge Security blocklist."
+  type        = bool
+  default     = true
 }
 
 variable "gzip_default_policy" {
