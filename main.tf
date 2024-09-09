@@ -10,7 +10,7 @@ locals {
 
   edge_security_dict_name = "Edge_Security"
 
-  datadog_format         = file("${path.module}/logging/datadog.json")
+  datadog_format         = templatefile("${path.module}/logging/datadog.json", { service = var.datadog_service })
   fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
 
   associated_domain_response = file("${path.module}/responses/associated_domain.json")

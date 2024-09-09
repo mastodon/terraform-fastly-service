@@ -1,6 +1,6 @@
 {
     "ddsource": "fastly",
-    "service": "%{req.service_id}V",
+    "service": "${service}",
     "date": "%{begin:%Y-%m-%dT%H:%M:%S%z}t",
     "time_start": "%{begin:%Y-%m-%dT%H:%M:%S%Z}t",
     "time_end": "%{end:%Y-%m-%dT%H:%M:%S%Z}t",

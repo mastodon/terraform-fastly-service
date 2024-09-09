@@ -53,6 +53,7 @@ No modules.
 | <a name="input_backend_ssl_check"></a> [backend\_ssl\_check](#input\_backend\_ssl\_check) | Be strict about checking SSL certs when connecting to the backend. | `bool` | `true` | no |
 | <a name="input_datadog"></a> [datadog](#input\_datadog) | Whether to send logging info to Datadog | `bool` | `false` | no |
 | <a name="input_datadog_region"></a> [datadog\_region](#input\_datadog\_region) | The region that log data will be sent to. | `string` | `"EU"` | no |
+| <a name="input_datadog_service"></a> [datadog\_service](#input\_datadog\_service) | Datadog service name to use for logs | `string` | `"fastly"` | no |
 | <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | `""` | no |
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | Additional domains to assign to this service | `list(string)` | `[]` | no |
