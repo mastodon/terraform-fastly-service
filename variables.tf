@@ -100,6 +100,8 @@ variable "media_backend" {
     condition_name = optional(string, "Media backend condition")
     ssl_check      = optional(bool, true)
     ssl_hostname   = optional(string, "")
+    redirect       = optional(bool, false)
+    redirect_uri   = optional(string, "")
   })
   default = { address = "" }
 }
