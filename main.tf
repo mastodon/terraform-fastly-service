@@ -34,7 +34,7 @@ locals {
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
   vcl_media_redirect        = templatefile("${path.module}/vcl/media_redirect.vcl", {
     backend  = "F_${replace(local.media_backend_name, " ", "_")}}",
-    redirect = var.media_backend["redirect_uri"]
+    redirect = var.media_backend["bucket_prefix"]
   })
 }
 
@@ -305,9 +305,9 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
-  # Media backend redirect
+  # Media backend rewrite
   dynamic "snippet" {
-    for_each = var.media_backend["redirect"] == true ? [1] : []
+    for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
     content {
       name     = "Rewrite assets requests to Exoscale"
       content  = local.vcl_media_redirect
