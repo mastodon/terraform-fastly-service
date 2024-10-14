@@ -100,6 +100,7 @@ variable "media_backend" {
     condition_name = optional(string, "Media backend condition")
     ssl_check      = optional(bool, true)
     ssl_hostname   = optional(string, "")
+    bucket_prefix  = optional(string, "")
   })
   default = { address = "" }
 }

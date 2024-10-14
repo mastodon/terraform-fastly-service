@@ -6,6 +6,7 @@ locals {
   healthcheck_host = var.healthcheck_host != "" ? var.healthcheck_host : var.hostname
   healthcheck_name = var.healthcheck_name != "" ? var.healthcheck_name : "${var.hostname} - healthcheck"
 
+  media_backend_name = var.media_backend["name"] != "" ? var.media_backend["name"] : "${local.backend_name} - media"
   media_ssl_hostname = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
   edge_security_dict_name = "Edge_Security"
@@ -31,6 +32,10 @@ locals {
   vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
+  vcl_media_redirect        = templatefile("${path.module}/vcl/media_redirect.vcl", {
+    backend  = "F_${replace(local.media_backend_name, " ", "_")}}",
+    redirect = var.media_backend["bucket_prefix"]
+  })
 }
 
 resource "fastly_service_vcl" "app_service" {
@@ -296,6 +301,17 @@ resource "fastly_service_vcl" "app_service" {
       name     = "Collect Globeviz data"
       content  = local.vcl_globeviz
       type     = "init"
+      priority = 100
+    }
+  }
+
+  # Media backend rewrite
+  dynamic "snippet" {
+    for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
+    content {
+      name     = "Rewrite assets requests to Exoscale"
+      content  = local.vcl_media_redirect
+      type     = "miss"
       priority = 100
     }
   }
