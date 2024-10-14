@@ -33,7 +33,7 @@ locals {
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
   vcl_media_redirect        = templatefile("${path.module}/vcl/media_redirect.vcl", {
-    backend  = "F_${replace(local.media_backend_name, " ", "_")}}",
+    backend  = "F_${replace(local.media_backend_name, " ", "_")}",
     redirect = var.media_backend["bucket_prefix"]
   })
 }
