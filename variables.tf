@@ -271,6 +271,12 @@ variable "product_enablement" {
   }
 }
 
+variable "purge_auth" {
+  description = "Whether to require API tokens when subimtting HTTP PURGE requests"
+  type        = bool
+  default     = true
+}
+
 # IP block lists
 
 variable "ip_blocklist" {

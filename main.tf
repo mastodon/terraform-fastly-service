@@ -32,7 +32,8 @@ locals {
   vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
-  vcl_media_redirect        = templatefile("${path.module}/vcl/media_redirect.vcl", {
+  vcl_purge_auth            = file("${path.module}/vcl/purge_auth.vcl")
+  vcl_media_redirect = templatefile("${path.module}/vcl/media_redirect.vcl", {
     backend  = "F_${replace(local.media_backend_name, " ", "_")}",
     redirect = var.media_backend["bucket_prefix"]
   })
@@ -312,6 +313,17 @@ resource "fastly_service_vcl" "app_service" {
       name     = "Rewrite assets requests to Exoscale"
       content  = local.vcl_media_redirect
       type     = "miss"
+      priority = 100
+    }
+  }
+
+  # Purge Authentication header
+  dynamic "snippet" {
+    for_each = var.purge_auth ? [1] : []
+    content {
+      name     = "Purge Authentication Header"
+      content  = local.vcl_purge_auth
+      type     = "recv"
       priority = 100
     }
   }
