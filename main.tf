@@ -334,7 +334,7 @@ resource "fastly_service_vcl" "app_service" {
     for_each = var.vary_accept_language ? [1] : []
     content {
       name     = "Vary Accept-Language"
-      content  = local.vcl_purge_auth
+      content  = local.vcl_vary_accept_language
       type     = "recv"
       priority = 100
     }
