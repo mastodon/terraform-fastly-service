@@ -90,6 +90,7 @@ No modules.
 | <a name="input_static_cache_control"></a> [static\_cache\_control](#input\_static\_cache\_control) | Add cache-control headers for static files | `bool` | `true` | no |
 | <a name="input_tarpit"></a> [tarpit](#input\_tarpit) | Whether to enable tarpit (anti-abuse rate limiting). | `bool` | `true` | no |
 | <a name="input_use_ssl"></a> [use\_ssl](#input\_use\_ssl) | Whether or not to use SSL to reach the Backend. | `bool` | `true` | no |
+| <a name="input_vary_accept_language"></a> [vary\_accept\_language](#input\_vary\_accept\_language) | Whether to set 'Vary: Accept-Language' as a header with language-specific pages | `bool` | `true` | no |
 | <a name="input_vcl_snippets"></a> [vcl\_snippets](#input\_vcl\_snippets) | Additional custom VCL snippets to add to the service. | <pre>list(object({<br>    content  = string<br>    name     = string<br>    type     = string<br>    priority = optional(number, 100)<br>  }))</pre> | `[]` | no |
 
 ## Outputs

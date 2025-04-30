@@ -33,6 +33,7 @@ locals {
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
   vcl_purge_auth            = file("${path.module}/vcl/purge_auth.vcl")
+  vcl_vary_accept_language  = file("${path.module}/vcl/language_vary.vcl")
   vcl_media_redirect = templatefile("${path.module}/vcl/media_redirect.vcl", {
     backend  = "F_${replace(local.media_backend_name, " ", "_")}",
     redirect = var.media_backend["bucket_prefix"]
@@ -322,6 +323,17 @@ resource "fastly_service_vcl" "app_service" {
     for_each = var.purge_auth ? [1] : []
     content {
       name     = "Purge Authentication Header"
+      content  = local.vcl_purge_auth
+      type     = "recv"
+      priority = 100
+    }
+  }
+
+  # Vary: Accept-Language header additions
+  dynamic "snippet" {
+    for_each = var.vary_accept_language ? [1] : []
+    content {
+      name     = "Vary Accept-Language"
       content  = local.vcl_purge_auth
       type     = "recv"
       priority = 100

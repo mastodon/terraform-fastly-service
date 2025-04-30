@@ -224,6 +224,12 @@ variable "apple_associated_domain" {
   default     = true
 }
 
+variable "vary_accept_language" {
+  description = "Whether to set 'Vary: Accept-Language' as a header with language-specific pages"
+  type        = bool
+  default     = true
+}
+
 variable "vcl_snippets" {
   description = "Additional custom VCL snippets to add to the service."
   type = list(object({
