@@ -15,6 +15,7 @@
       "status_code": "%s"
     },
     "network": {
+      "cache_state": "%{fastly_info.state}V",
       "client": {
        "ip": "%h",
        "name": "%{client.as.name}V",
