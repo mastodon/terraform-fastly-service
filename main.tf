@@ -37,6 +37,8 @@ locals {
     backend  = "F_${replace(local.media_backend_name, " ", "_")}",
     redirect = var.media_backend["bucket_prefix"]
   })
+
+  tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
 }
 
 resource "fastly_service_vcl" "app_service" {
@@ -643,4 +645,13 @@ resource "fastly_service_dictionary_items" "ja_blocklist_entries" {
   manage_items  = length(var.ja3_blocklist_items) > 0 ? true : false
 
   items = { for i in var.ja3_blocklist_items : i => "block" }
+}
+
+# TLS
+
+resource "fastly_tls_subscription" "tls" {
+  count = var.tls_enable ? 1 : 0
+
+  domains               = local.tls_domains
+  certificate_authority = "certainly"
 }

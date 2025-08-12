@@ -32,3 +32,8 @@ output "ja3_blocklist_dictionary_id" {
   description = "ID of the JA3 blocklist dictionary"
   value       = var.ja3_blocklist ? fastly_service_dictionary_items.ja_blocklist_entries["JA3 Blocklist"].dictionary_id : null
 }
+
+output "tls_certificate_id" {
+  description = "ID of the certificate issued by Fastly"
+  value       = var.tls_enable ? fastly_tls_subscription.tls[0].certificate_id : null
+}

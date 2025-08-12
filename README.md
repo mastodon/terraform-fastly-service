@@ -31,6 +31,7 @@ No modules.
 | [fastly_service_dictionary_items.edge_security](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_dictionary_items.ja_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_vcl.app_service](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_vcl) | resource |
+| [fastly_tls_subscription.tls](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/tls_subscription) | resource |
 
 ## Inputs
 
@@ -89,6 +90,9 @@ No modules.
 | <a name="input_ssl_hostname"></a> [ssl\_hostname](#input\_ssl\_hostname) | Hostname to use for SSL verification (if different from 'hostname'). | `string` | `""` | no |
 | <a name="input_static_cache_control"></a> [static\_cache\_control](#input\_static\_cache\_control) | Add cache-control headers for static files | `bool` | `true` | no |
 | <a name="input_tarpit"></a> [tarpit](#input\_tarpit) | Whether to enable tarpit (anti-abuse rate limiting). | `bool` | `true` | no |
+| <a name="input_tls_authority"></a> [tls\_authority](#input\_tls\_authority) | Which certificate authority to use for the certificates | `string` | `"certainly"` | no |
+| <a name="input_tls_domains"></a> [tls\_domains](#input\_tls\_domains) | Custom domains to use for a TLS subscription. Defaults to a combination of 'hostname' and 'domains' | `list(string)` | `[]` | no |
+| <a name="input_tls_enable"></a> [tls\_enable](#input\_tls\_enable) | Whether to create a TLS subscription in Fastly for the domain(s) | `bool` | `false` | no |
 | <a name="input_use_ssl"></a> [use\_ssl](#input\_use\_ssl) | Whether or not to use SSL to reach the Backend. | `bool` | `true` | no |
 | <a name="input_vcl_snippets"></a> [vcl\_snippets](#input\_vcl\_snippets) | Additional custom VCL snippets to add to the service. | <pre>list(object({<br>    content  = string<br>    name     = string<br>    type     = string<br>    priority = optional(number, 100)<br>  }))</pre> | `[]` | no |
 
@@ -103,3 +107,4 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | The ID of this resource |
 | <a name="output_ip_blocklist_acl_id"></a> [ip\_blocklist\_acl\_id](#output\_ip\_blocklist\_acl\_id) | ID of the IP blocklist ACL |
 | <a name="output_ja3_blocklist_dictionary_id"></a> [ja3\_blocklist\_dictionary\_id](#output\_ja3\_blocklist\_dictionary\_id) | ID of the JA3 blocklist dictionary |
+| <a name="output_tls_certificate_id"></a> [tls\_certificate\_id](#output\_tls\_certificate\_id) | ID of the certificate issued by Fastly |
