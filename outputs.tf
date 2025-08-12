@@ -35,5 +35,5 @@ output "ja3_blocklist_dictionary_id" {
 
 output "tls_certificate_id" {
   description = "ID of the certificate issued by Fastly"
-  value       = var.tls_enable ? fastly_tls_subscription.certificate_id : null
+  value       = var.tls_enable ? fastly_tls_subscription.tls[0].certificate_id : null
 }

@@ -38,7 +38,7 @@ locals {
     redirect = var.media_backend["bucket_prefix"]
   })
 
-  tls_domains = var.tls_domains.count >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
+  tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
 }
 
 resource "fastly_service_vcl" "app_service" {
