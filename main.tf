@@ -6,8 +6,9 @@ locals {
   healthcheck_host = var.healthcheck_host != "" ? var.healthcheck_host : var.hostname
   healthcheck_name = var.healthcheck_name != "" ? var.healthcheck_name : "${var.hostname} - healthcheck"
 
-  media_backend_name = var.media_backend["name"] != "" ? var.media_backend["name"] : "${local.backend_name} - media"
-  media_ssl_hostname = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
+  media_backend_name     = var.media_backend["name"] != "" ? var.media_backend["name"] : "${local.backend_name} - media"
+  media_backend_name_vcl = "F_${replace(local.media_backend_name, " ", "_")}"
+  media_ssl_hostname     = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
   edge_security_dict_name = "Edge_Security"
 
@@ -34,11 +35,11 @@ locals {
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
   vcl_purge_auth            = file("${path.module}/vcl/purge_auth.vcl")
   vcl_media_redirect = templatefile("${path.module}/vcl/media_redirect.vcl", {
-    backend  = "F_${replace(local.media_backend_name, " ", "_")}",
+    backend  = local.media_backend_name_vcl,
     redirect = var.media_backend["bucket_prefix"]
   })
   vcl_media_cache_control = templatefile("${path.module}/vcl/media_cache_control.vcl", {
-    backend  = "F_${replace(local.media_backend_name, " ", "_")}",
+    backend  = local.media_backend_name_vcl
   })
 
   tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
