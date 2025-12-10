@@ -37,6 +37,9 @@ locals {
     backend  = "F_${replace(local.media_backend_name, " ", "_")}",
     redirect = var.media_backend["bucket_prefix"]
   })
+  vcl_media_cache_control = templatefile("${path.module}/vcl/media_cache_control.vcl", {
+    backend  = "F_${replace(local.media_backend_name, " ", "_")}",
+  })
 
   tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
 }
@@ -309,12 +312,24 @@ resource "fastly_service_vcl" "app_service" {
   }
 
   # Media backend rewrite
+
   dynamic "snippet" {
     for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
     content {
       name     = "Rewrite assets requests to Exoscale"
       content  = local.vcl_media_redirect
       type     = "miss"
+      priority = 100
+    }
+  }
+
+  dynamic "snippet" {
+    for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
+
+    content {
+      name     = "Add Cache-Control headers to Exoscale response"
+      content  = local.vcl_media_cache_control
+      type     = "fetch"
       priority = 100
     }
   }

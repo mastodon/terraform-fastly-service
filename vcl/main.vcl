@@ -67,13 +67,15 @@ sub vcl_fetch {
   # If no TTL has been provided in the response headers, set a default
   if (!beresp.http.Expires && !beresp.http.Surrogate-Control ~ "max-age" && !beresp.http.Cache-Control ~ "(s-maxage|max-age)") {
     # set beresp.ttl = 3600s;
-    return(pass);
 
     # Apply a longer default TTL for images processed using Image Optimizer
     if (req.http.X-Fastly-Imageopto-Api) {
       set beresp.ttl = 2592000s; # 30 days
       set beresp.http.Cache-Control = "max-age=2592000, public";
     }
+
+    # We don't set a default TTL here, so just return
+    return(pass);
   }
 
   return(deliver);
