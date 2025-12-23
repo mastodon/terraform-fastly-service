@@ -326,6 +326,16 @@ resource "fastly_service_vcl" "app_service" {
 
   dynamic "snippet" {
     for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
+    content {
+      name     = "Rewrite assets requests to Exoscale"
+      content  = local.vcl_media_redirect
+      type     = "pass"
+      priority = 100
+    }
+  }
+
+  dynamic "snippet" {
+    for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
 
     content {
       name     = "Add Cache-Control headers to Exoscale response"
