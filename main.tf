@@ -317,7 +317,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "snippet" {
     for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
     content {
-      name     = "Rewrite assets requests to Exoscale (miss)"
+      name     = "Rewrite assets requests to Exoscale - miss"
       content  = local.vcl_media_redirect
       type     = "miss"
       priority = 100
@@ -327,7 +327,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "snippet" {
     for_each = var.media_backend["bucket_prefix"] != "" ? [1] : []
     content {
-      name     = "Rewrite assets requests to Exoscale (pass)"
+      name     = "Rewrite assets requests to Exoscale - pass"
       content  = local.vcl_media_redirect
       type     = "pass"
       priority = 100
