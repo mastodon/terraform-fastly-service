@@ -7,7 +7,7 @@ locals {
   healthcheck_name = var.healthcheck_name != "" ? var.healthcheck_name : "${var.hostname} - healthcheck"
 
   media_backend_name     = var.media_backend["name"] != "" ? var.media_backend["name"] : "${local.backend_name} - media"
-  media_backend_name_vcl = "F_${replace(local.media_backend_name, " ", "_")}"
+  media_backend_name_vcl = "${replace(local.media_backend_name, " ", "_")}"
   media_ssl_hostname     = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
   edge_security_dict_name = "Edge_Security"
