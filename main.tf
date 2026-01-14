@@ -39,7 +39,7 @@ locals {
     redirect = var.media_backend["bucket_prefix"]
   })
   vcl_media_cache_control = templatefile("${path.module}/vcl/media_cache_control.vcl", {
-    backend  = local.media_backend_name_vcl
+    condition  = var.media_backend["condition"]
   })
 
   tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
