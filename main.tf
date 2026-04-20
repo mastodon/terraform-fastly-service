@@ -630,7 +630,6 @@ resource "fastly_service_vcl" "app_service" {
     content {
       name = "Block JA4"
 
-      content_type      = "text/html"
       request_condition = "JA4 needs to be blocked"
       response          = "Service Unavailable"
       status            = 503
