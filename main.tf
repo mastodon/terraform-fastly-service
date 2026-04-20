@@ -620,7 +620,7 @@ resource "fastly_service_vcl" "app_service" {
     content {
       name      = "JA4 needs to be blocked"
       priority  = 10
-      statement = "table.lookup(${replace(var.ja4_blocklist_name, " ", "_")}, tls.client.ja4_md5) == \"block\""
+      statement = "table.lookup(${replace(var.ja4_blocklist_name, " ", "_")}, tls.client.ja4) == \"block\""
       type      = "REQUEST"
     }
   }
@@ -633,7 +633,7 @@ resource "fastly_service_vcl" "app_service" {
       content_type      = "text/html"
       request_condition = "JA4 needs to be blocked"
       response          = "Forbidden"
-      status            = 403
+      status            = 503
     }
   }
 }
