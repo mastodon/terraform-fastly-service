@@ -354,6 +354,26 @@ variable "ja3_blocklist_name" {
   default     = "JA3 Blocklist"
 }
 
+# JA4 block list
+
+variable "ja4_blocklist" {
+  description = "Whether to enable the JA4 Blocklist Dictionary. Must be managed externally, unless ja4_blocklist_items is given."
+  type        = bool
+  default     = true
+}
+
+variable "ja4_blocklist_items" {
+  description = "List of JA4 hashes to block. This will make the Dictionary object 'managed' by terraform."
+  type        = list(string)
+  default     = []
+}
+
+variable "ja4_blocklist_name" {
+  description = "Name for the Dictionray responsible for holding all the blocked JA4 hashes."
+  type        = string
+  default     = "JA4 Blocklist"
+}
+
 # Signal Sciences
 
 variable "signal_science_host" {
