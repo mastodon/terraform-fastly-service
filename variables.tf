@@ -256,18 +256,24 @@ variable "dynamic_compression" {
 variable "product_enablement" {
   description = "Which additional Fastly products to enable for this service."
   type = object({
-    brotli_compression = optional(bool, false)
-    domain_inspector   = optional(bool, false)
-    image_optimizer    = optional(bool, false)
-    origin_inspector   = optional(bool, false)
-    websockets         = optional(bool, false)
+    api_discovery         = optional(bool, false)
+    brotli_compression    = optional(bool, false)
+    domain_inspector      = optional(bool, false)
+    image_optimizer       = optional(bool, false)
+    log_explorer_insights = optional(bool, false)
+    origin_inspector      = optional(bool, false)
+    websockets            = optional(bool, false)
+    ddos_protection       = optional(string, "off")
   })
   default = {
-    brotli_compression = false
-    domain_inspector   = false
-    image_optimizer    = false
-    origin_inspector   = false
-    websockets         = false
+    api_discovery         = false
+    brotli_compression    = false
+    domain_inspector      = false
+    image_optimizer       = false
+    log_explorer_insights = false
+    origin_inspector      = false
+    websockets            = false
+    ddos_protection       = "off"
   }
 }
 

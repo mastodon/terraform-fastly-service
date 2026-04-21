@@ -9,13 +9,13 @@ Contains much of the logic and default configuration that exists across all offi
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 5.7.1 |
+| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 9.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | 5.10.0 |
+| <a name="provider_fastly"></a> [fastly](#provider\_fastly) | 9.1.0 |
 
 ## Modules
 
@@ -85,7 +85,7 @@ No modules.
 | <a name="input_media_backend"></a> [media\_backend](#input\_media\_backend) | Additional backend to use for service media files | <pre>object({<br>    address        = string<br>    name           = optional(string, "")<br>    condition      = optional(string, "")<br>    condition_name = optional(string, "Media backend condition")<br>    ssl_check      = optional(bool, true)<br>    ssl_hostname   = optional(string, "")<br>    bucket_prefix  = optional(string, "")<br>  })</pre> | <pre>{<br>  "address": ""<br>}</pre> | no |
 | <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Minimum allowed TLS version on SSL connections to the backend. | `string` | `"1.2"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the fastly service (defaults to hostname). | `string` | `""` | no |
-| <a name="input_product_enablement"></a> [product\_enablement](#input\_product\_enablement) | Which additional Fastly products to enable for this service. | <pre>object({<br>    brotli_compression = optional(bool, false)<br>    domain_inspector   = optional(bool, false)<br>    image_optimizer    = optional(bool, false)<br>    origin_inspector   = optional(bool, false)<br>    websockets         = optional(bool, false)<br>  })</pre> | <pre>{<br>  "brotli_compression": false,<br>  "domain_inspector": false,<br>  "image_optimizer": false,<br>  "origin_inspector": false,<br>  "websockets": false<br>}</pre> | no |
+| <a name="input_product_enablement"></a> [product\_enablement](#input\_product\_enablement) | Which additional Fastly products to enable for this service. | <pre>object({<br>    api_discovery         = optional(bool, false)<br>    brotli_compression    = optional(bool, false)<br>    domain_inspector      = optional(bool, false)<br>    image_optimizer       = optional(bool, false)<br>    log_explorer_insights = optional(bool, false)<br>    origin_inspector      = optional(bool, false)<br>    websockets            = optional(bool, false)<br>    ddos_protection       = optional(string, "off")<br>  })</pre> | <pre>{<br>  "api_discovery": false,<br>  "brotli_compression": false,<br>  "ddos_protection": "off",<br>  "domain_inspector": false,<br>  "image_optimizer": false,<br>  "log_explorer_insights": false,<br>  "origin_inspector": false,<br>  "websockets": false<br>}</pre> | no |
 | <a name="input_purge_auth"></a> [purge\_auth](#input\_purge\_auth) | Whether to require API tokens when subimtting HTTP PURGE requests | `bool` | `true` | no |
 | <a name="input_shield_region"></a> [shield\_region](#input\_shield\_region) | Which Fastly shield region to use. Should correspond with the shield code. | `string` | n/a | yes |
 | <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | `""` | no |
