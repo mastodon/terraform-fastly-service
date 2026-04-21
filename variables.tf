@@ -261,6 +261,7 @@ variable "product_enablement" {
     image_optimizer    = optional(bool, false)
     origin_inspector   = optional(bool, false)
     websockets         = optional(bool, false)
+    ddos_protection    = optional(string, "off")
   })
   default = {
     brotli_compression = false
@@ -268,6 +269,7 @@ variable "product_enablement" {
     image_optimizer    = false
     origin_inspector   = false
     websockets         = false
+    ddos_protection    = "off"
   }
 }
 

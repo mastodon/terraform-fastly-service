@@ -420,6 +420,11 @@ resource "fastly_service_vcl" "app_service" {
     image_optimizer    = var.product_enablement.image_optimizer
     origin_inspector   = var.product_enablement.origin_inspector
     websockets         = var.product_enablement.websockets
+
+    ddos_protection {
+      enabled = var.ddos_protection != "off" ? true : false
+      mode    = var.ddos_protection
+    }
   }
 
   # Support Apple Associated Domains
