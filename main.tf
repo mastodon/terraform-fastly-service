@@ -422,8 +422,8 @@ resource "fastly_service_vcl" "app_service" {
     websockets         = var.product_enablement.websockets
 
     ddos_protection {
-      enabled = var.ddos_protection != "off" ? true : false
-      mode    = var.ddos_protection
+      enabled = var.product_enablement.ddos_protection != "off" ? true : false
+      mode    = var.product_enablement.ddos_protection
     }
   }
 
