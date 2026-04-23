@@ -292,7 +292,7 @@ variable "rate_limiter_enabled" {
 }
 
 variable rate_limiter_name {
-  description = "Unique name to refer to this Request Setting"
+  description = "Unique name to refer to this Request Setting."
   type        = string
   default     = ""
 }

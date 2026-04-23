@@ -92,7 +92,7 @@ No modules.
 | <a name="input_rate_limiter_enabled"></a> [rate\_limiter\_enabled](#input\_rate\_limiter\_enabled) | Whether to enable rate limiting. | `bool` | `false` | no |
 | <a name="input_rate_limiter_key"></a> [rate\_limiter\_key](#input\_rate\_limiter\_key) | Comma-separated list of VCL variables used to generate a counter key to identify a client. | `string` | `"client.ip"` | no |
 | <a name="input_rate_limiter_methods"></a> [rate\_limiter\_methods](#input\_rate\_limiter\_methods) | Comma-separated list of HTTP methods to apply rate limiting to. | `string` | `"GET,PUT,TRACE,POST,HEAD,DELETE,PATCH,OPTIONS"` | no |
-| <a name="input_rate_limiter_name"></a> [rate\_limiter\_name](#input\_rate\_limiter\_name) | Unique name to refer to this Request Setting | `string` | `""` | no |
+| <a name="input_rate_limiter_name"></a> [rate\_limiter\_name](#input\_rate\_limiter\_name) | Unique name to refer to this Request Setting. | `string` | `""` | no |
 | <a name="input_rate_limiter_rps_limit"></a> [rate\_limiter\_rps\_limit](#input\_rate\_limiter\_rps\_limit) | Upper limit of requests per second allowed by the rate limiter. | `number` | `10` | no |
 | <a name="input_rate_limiter_window_size"></a> [rate\_limiter\_window\_size](#input\_rate\_limiter\_window\_size) | Number of seconds during which the RPS limit must be exceeded in order to trigger a violation. | `number` | `10` | no |
 | <a name="input_shield_region"></a> [shield\_region](#input\_shield\_region) | Which Fastly shield region to use. Should correspond with the shield code. | `string` | n/a | yes |
