@@ -18,7 +18,7 @@ locals {
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
   deep_link_response         = file("${path.module}/responses/deep_link.json")
 
-  rate_limiter_name      = var.rate_limiter_name ? var.rate_limiter_name : "Rate-limit paths on ${local.name}"
+  rate_limiter_name      = var.rate_limiter_name != "" ? var.rate_limiter_name : "Rate-limit paths on ${local.name}"
   rate_limiter_dict_name = "Rate limited paths"
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
