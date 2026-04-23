@@ -303,7 +303,7 @@ variable "rate_limiter_action" {
   default     = "response"
 
   validation {
-    condition     = contains(["log_only, response, response_object"], var.rate_limiter_action)
+    condition     = contains(["log_only", "response", "response_object"], var.rate_limiter_action)
     error_message = "Must be one of: log_only, response, response_object"
   }
 }
