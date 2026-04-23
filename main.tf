@@ -674,7 +674,7 @@ resource "fastly_service_vcl" "app_service" {
       name = "Block JA4"
 
       request_condition = "JA4 needs to be blocked"
-      response          = "Service Unavailable"
+      response          = "Forbidden"
       status            = 403
     }
   }
