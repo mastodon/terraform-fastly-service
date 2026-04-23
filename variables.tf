@@ -283,6 +283,66 @@ variable "purge_auth" {
   default     = true
 }
 
+# Rate limiter
+
+variable "rate_limiter_enabled" {
+  description = "Whether to enable rate limiting."
+  type        = bool
+  default     = false
+}
+
+variable rate_limiter_name {
+  description = "Unique name to refer to this Request Setting."
+  type        = string
+  default     = ""
+}
+
+variable "rate_limiter_action" {
+  description = "The action to take when a rate limiter violation is detected."
+  type        = string
+  default     = "response"
+
+  validation {
+    condition     = contains(["log_only", "response", "response_object"], var.rate_limiter_action)
+    error_message = "Must be one of: log_only, response, response_object"
+  }
+}
+
+variable "rate_limiter_key" {
+  description = "Comma-separated list of VCL variables used to generate a counter key to identify a client."
+  type        = string
+  default     = "client.ip"
+}
+
+variable "rate_limiter_methods" {
+  description = "Comma-separated list of HTTP methods to apply rate limiting to."
+  type        = string
+  default     = "GET,PUT,TRACE,POST,HEAD,DELETE,PATCH,OPTIONS"
+}
+
+variable "rate_limiter_duration" {
+  description = "Length of time in minutes that the rate limiter is in effect after the initial violation is detected."
+  type        = number
+  default     = 2
+}
+
+variable "rate_limiter_rps_limit" {
+  description = "Upper limit of requests per second allowed by the rate limiter."
+  type        = number
+  default     = 10
+}
+
+variable "rate_limiter_window_size" {
+  description = "Number of seconds during which the RPS limit must be exceeded in order to trigger a violation."
+  type        = number
+  default     = 10
+
+  validation {
+    condition     = contains([1, 10, 60], var.rate_limiter_window_size)
+    error_message = "Must be one of: 1, 10, 60"
+  }
+}
+
 # IP block lists
 
 variable "ip_blocklist" {

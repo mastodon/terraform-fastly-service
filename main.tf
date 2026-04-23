@@ -18,6 +18,10 @@ locals {
   associated_domain_response = file("${path.module}/responses/associated_domain.json")
   deep_link_response         = file("${path.module}/responses/deep_link.json")
 
+  rate_limiter_name      = var.rate_limiter_name != "" ? var.rate_limiter_name : "Rate-limit paths on ${local.name}"
+  rate_limiter_dict_name = "Rate limited paths"
+  rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
+
   vcl_main = file("${path.module}/vcl/main.vcl")
   vcl_sigsci_config = templatefile("${path.module}/vcl/sigsci_config.vcl", {
     host       = var.signal_science_host,
@@ -486,6 +490,38 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
+  # Edge Rate Limiting
+
+  dynamic "dictionary" {
+    for_each = var.rate_limiter_enabled ? [1] : []
+
+    content {
+      name = local.rate_limiter_dict_name
+    }
+  }
+
+  dynamic "rate_limiter" {
+    for_each = var.rate_limiter_enabled ? [1] : []
+
+    content {
+      name                 = local.rate_limiter_name
+      action               = var.rate_limiter_action
+      client_key           = var.rate_limiter_key
+      http_methods         = var.rate_limiter_methods
+      penalty_box_duration = var.rate_limiter_duration
+      rps_limit            = var.rate_limiter_rps_limit
+      window_size          = var.rate_limiter_window_size
+
+      uri_dictionary_name = local.rate_limiter_dict_name
+
+      response {
+        content      = local.rate_limiter_response
+        content_type = "text/html"
+        status       = 429
+      }
+    }
+  }
+
   # IP Blocklist settings
   # Creates similar objects & resources to what the GUI IP Blocklist creates.
 
@@ -638,8 +674,8 @@ resource "fastly_service_vcl" "app_service" {
       name = "Block JA4"
 
       request_condition = "JA4 needs to be blocked"
-      response          = "Service Unavailable"
-      status            = 503
+      response          = "Forbidden"
+      status            = 403
     }
   }
 }
