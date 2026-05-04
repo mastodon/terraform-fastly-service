@@ -11,6 +11,8 @@ locals {
   media_ssl_hostname     = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
   edge_security_dict_name = "Edge_Security"
+  maintenance_dict_name   = replace(var.mastodon_maintenance_dict_name, " ", "_")
+  status_html             = var.mastodon_status_page != "" ? "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n" : ""
 
   datadog_format         = replace(file("${path.module}/logging/datadog.json"), "__service__", var.datadog_service)
   fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
@@ -33,7 +35,11 @@ locals {
   vcl_backend_403           = file("${path.module}/vcl/backend_403.vcl")
   vcl_block_user_agents     = file("${path.module}/vcl/block_user_agents.vcl")
   vcl_custom_error_redirect = file("${path.module}/vcl/custom_error_redirect.vcl")
-  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", { hostname = var.hostname })
+  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", {
+    hostname = var.hostname,
+    table    = local.maintenance_dict_name ,
+    status   = local.status_html
+  })
   vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
@@ -280,6 +286,13 @@ resource "fastly_service_vcl" "app_service" {
       content  = local.vcl_custom_error_redirect
       type     = "fetch"
       priority = 100
+    }
+  }
+
+  dynamic "dictionary" {
+    for_each = var.mastodon_error_page ? [1] : []
+    content {
+      name = var.mastodon_maintenance_dict_name
     }
   }
 
