@@ -212,6 +212,12 @@ variable "mastodon_error_page" {
   default     = true
 }
 
+variable "mastodon_status_page" {
+  description = "Link to an instance status page for incident/maintenance info."
+  type        = string
+  default     = ""
+}
+
 variable "mastodon_maintenance_dict_name" {
   description = "Name of the dictionary to set maintenance mode."
   type        = string
