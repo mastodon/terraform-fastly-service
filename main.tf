@@ -35,7 +35,11 @@ locals {
   vcl_backend_403           = file("${path.module}/vcl/backend_403.vcl")
   vcl_block_user_agents     = file("${path.module}/vcl/block_user_agents.vcl")
   vcl_custom_error_redirect = file("${path.module}/vcl/custom_error_redirect.vcl")
-  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", { hostname = var.hostname, table = local.maintenance_dict_name })
+  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", {
+    hostname = var.hostname,
+    table    = local.maintenance_dict_name ,
+    status   = local.status_html
+  })
   vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
   vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
   vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
