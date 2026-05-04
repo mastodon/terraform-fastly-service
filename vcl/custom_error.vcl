@@ -4,7 +4,7 @@ if ((obj.status >= 500 && obj.status < 600) || obj.status == 601) {
     set obj.status = 503;
     set obj.response = "Service Unavailable";
   }
-  if (table.lookup(${table}, Enabled, 0) == 100) {
+  if (table.lookup(${table}, "Enabled", "0") == "100") {
     synthetic {"
       <!DOCTYPE html>
       <html lang="en">
