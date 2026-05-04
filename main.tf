@@ -12,7 +12,7 @@ locals {
 
   edge_security_dict_name = "Edge_Security"
   maintenance_dict_name   = replace(var.mastodon_maintenance_dict_name, " ", "_")
-  status_html             = var.mastodon_status_page == "" ? "" : "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n"
+  status_html             = var.mastodon_status_page != "" ? "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n" : ""
 
   datadog_format         = replace(file("${path.module}/logging/datadog.json"), "__service__", var.datadog_service)
   fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
