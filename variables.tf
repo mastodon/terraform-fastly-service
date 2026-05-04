@@ -212,6 +212,12 @@ variable "mastodon_error_page" {
   default     = true
 }
 
+variable "mastodon_maintenance_dict_name" {
+  description = "Name of the dictionary to set maintenance mode."
+  type        = string
+  default     = "Maintenance Mode"
+}
+
 variable "tarpit" {
   description = "Whether to enable tarpit (anti-abuse rate limiting)."
   type        = bool
