@@ -456,20 +456,6 @@ variable "ja4_blocklist_name" {
   default     = "JA4 Blocklist"
 }
 
-# Signal Sciences
-
-variable "signal_science_host" {
-  description = "Hostname to use to integrate with Signal Sciences"
-  type        = string
-  default     = ""
-}
-
-variable "signal_science_shared_key" {
-  description = "Shared key to use when integrating with Signal Sciences"
-  type        = string
-  default     = ""
-}
-
 # Globeviz
 
 variable "globeviz_service" {
