@@ -10,7 +10,6 @@ locals {
   media_backend_name_vcl = "F_${replace(local.media_backend_name, " ", "_")}"
   media_ssl_hostname     = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
-  edge_security_dict_name = "Edge_Security"
   maintenance_dict_name   = replace(var.mastodon_maintenance_dict_name, " ", "_")
   status_html             = var.mastodon_status_page != "" ? "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n" : ""
 
@@ -461,13 +460,6 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
-  dynamic "dictionary" {
-    for_each = var.edge_security ? [1] : []
-    content {
-      name = local.edge_security_dict_name
-    }
-  }
-
   # Android deep link
 
   dynamic "condition" {
@@ -681,17 +673,6 @@ resource "fastly_service_vcl" "app_service" {
       status            = 403
     }
   }
-}
-
-# Edge Security
-resource "fastly_service_dictionary_items" "edge_security" {
-  for_each = {
-    for d in fastly_service_vcl.app_service.dictionary : d.name => d if d.name == local.edge_security_dict_name
-  }
-  service_id    = fastly_service_vcl.app_service.id
-  dictionary_id = each.value.dictionary_id
-
-  items = { Enabled = 100 }
 }
 
 # IP Blocklist entries

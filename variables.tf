@@ -247,12 +247,6 @@ variable "vcl_snippets" {
   default = []
 }
 
-variable "edge_security" {
-  description = "Whether to enable the Edge Security blocklist."
-  type        = bool
-  default     = true
-}
-
 variable "gzip_default_policy" {
   description = "Whether to enable Fastly's default gzip policy"
   type        = bool
