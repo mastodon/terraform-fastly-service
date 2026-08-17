@@ -432,18 +432,25 @@ resource "fastly_service_vcl" "app_service" {
 
   # Additional products
   product_enablement {
-    api_discovery         = var.product_enablement.api_discovery
-    brotli_compression    = var.product_enablement.brotli_compression
-    domain_inspector      = var.product_enablement.domain_inspector
-    image_optimizer       = var.product_enablement.image_optimizer
-    log_explorer_insights = var.product_enablement.log_explorer_insights
-    origin_inspector      = var.product_enablement.origin_inspector
-    websockets            = var.product_enablement.websockets
-
+    api_discovery = var.product_enablement.api_discovery
+    bot_management {
+      enabled      = var.product_enablement.bot_management != "off" ? true : false
+      contentguard = var.product_enablement.bot_management
+    }
+    brotli_compression = var.product_enablement.brotli_compression
     ddos_protection {
       enabled = var.product_enablement.ddos_protection != "off" ? true : false
       mode    = var.product_enablement.ddos_protection
     }
+    domain_inspector      = var.product_enablement.domain_inspector
+    image_optimizer       = var.product_enablement.image_optimizer
+    log_explorer_insights = var.product_enablement.log_explorer_insights
+    ngwaf {
+      enabled      = var.product_enablement.ngwaf != "" ? true : false
+      workspace_id = var.product_enablement.ngwaf
+    }
+    origin_inspector = var.product_enablement.origin_inspector
+    websockets       = var.product_enablement.websockets
   }
 
   # Support Apple Associated Domains
