@@ -1,5 +1,3 @@
-include "sigsci_config";
-
 sub vcl_recv {
 #FASTLY recv
 
@@ -10,15 +8,14 @@ sub vcl_recv {
   }
 
   # If you are using image optimization, insert the code to enable it here
-  # See https://developer.fastly.com/reference/io/ for more information.
-
+  # See https://www.fastly.com/documentation/reference/io/ for more information.
   return(lookup);
 }
 
 sub vcl_hash {
   set req.hash += req.url;
   set req.hash += req.http.host;
-  #FASTLY hash
+#FASTLY hash
   return(hash);
 }
 
@@ -29,13 +26,11 @@ sub vcl_hit {
 
 sub vcl_miss {
 #FASTLY miss
-  call edge_security;
   return(fetch);
 }
 
 sub vcl_pass {
 #FASTLY pass
-  call edge_security;
   return(pass);
 }
 
@@ -59,8 +54,8 @@ sub vcl_fetch {
   }
 
   # By default we set a TTL based on the `Cache-Control` header but we don't parse additional directives
-  # like `private` and `no-store`.  Private in particular should be respected at the edge:
-  if (beresp.http.Cache-Control ~ "(private|no-store)") {
+  # like `private` and `no-store`. Private in particular should be respected at the edge:
+  if (beresp.http.Cache-Control ~ "(?:private|no-store)") {
     return(pass);
   }
 

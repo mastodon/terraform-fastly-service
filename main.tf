@@ -25,10 +25,6 @@ locals {
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
   vcl_main = file("${path.module}/vcl/main.vcl")
-  vcl_sigsci_config = templatefile("${path.module}/vcl/sigsci_config.vcl", {
-    host       = var.signal_science_host,
-    shared_key = var.signal_science_shared_key
-  })
 
   vcl_apex_error            = templatefile("${path.module}/vcl/apex_error.vcl", { hostname = var.hostname })
   vcl_apex_redirect         = templatefile("${path.module}/vcl/apex_redirect.vcl", { hostname = var.hostname })
@@ -213,25 +209,12 @@ resource "fastly_service_vcl" "app_service" {
     }
   }
 
-  # Signal Sciences integration
-  # We need to enable a custom main VCL file in order to do what we need here
+  # Custom VCL main file
+  vcl {
+    name    = "Main VCL File"
+    content = local.vcl_main
 
-  dynamic "vcl" {
-    for_each = var.signal_science_host != "" && var.signal_science_shared_key != "" ? [1] : []
-    content {
-      name    = "Main VCL File"
-      content = local.vcl_main
-
-      main = true
-    }
-  }
-
-  dynamic "vcl" {
-    for_each = (var.signal_science_host != "") && (var.signal_science_shared_key != "") ? [1] : []
-    content {
-      name    = "sigsci_config"
-      content = local.vcl_sigsci_config
-    }
+    main = true
   }
 
   # Redirect www

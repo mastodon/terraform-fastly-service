@@ -98,8 +98,6 @@ No modules.
 | <a name="input_rate_limiter_rps_limit"></a> [rate\_limiter\_rps\_limit](#input\_rate\_limiter\_rps\_limit) | Upper limit of requests per second allowed by the rate limiter. | `number` | `10` | no |
 | <a name="input_rate_limiter_window_size"></a> [rate\_limiter\_window\_size](#input\_rate\_limiter\_window\_size) | Number of seconds during which the RPS limit must be exceeded in order to trigger a violation. | `number` | `10` | no |
 | <a name="input_shield_region"></a> [shield\_region](#input\_shield\_region) | Which Fastly shield region to use. Should correspond with the shield code. | `string` | n/a | yes |
-| <a name="input_signal_science_host"></a> [signal\_science\_host](#input\_signal\_science\_host) | Hostname to use to integrate with Signal Sciences | `string` | `""` | no |
-| <a name="input_signal_science_shared_key"></a> [signal\_science\_shared\_key](#input\_signal\_science\_shared\_key) | Shared key to use when integrating with Signal Sciences | `string` | `""` | no |
 | <a name="input_ssl_hostname"></a> [ssl\_hostname](#input\_ssl\_hostname) | Hostname to use for SSL verification (if different from 'hostname'). | `string` | `""` | no |
 | <a name="input_static_cache_control"></a> [static\_cache\_control](#input\_static\_cache\_control) | Add cache-control headers for static files | `bool` | `true` | no |
 | <a name="input_tarpit"></a> [tarpit](#input\_tarpit) | Whether to enable tarpit (anti-abuse rate limiting). | `bool` | `true` | no |
