@@ -269,23 +269,27 @@ variable "product_enablement" {
   description = "Which additional Fastly products to enable for this service."
   type = object({
     api_discovery         = optional(bool, false)
+    bot_management        = optional(string, "off")
     brotli_compression    = optional(bool, false)
+    ddos_protection       = optional(string, "off")
     domain_inspector      = optional(bool, false)
     image_optimizer       = optional(bool, false)
     log_explorer_insights = optional(bool, false)
+    ngwaf                 = optional(string, "")
     origin_inspector      = optional(bool, false)
     websockets            = optional(bool, false)
-    ddos_protection       = optional(string, "off")
   })
   default = {
     api_discovery         = false
+    bot_management        = "off"
     brotli_compression    = false
+    ddos_protection       = "off"
     domain_inspector      = false
     image_optimizer       = false
     log_explorer_insights = false
+    ngwaf                 = ""
     origin_inspector      = false
     websockets            = false
-    ddos_protection       = "off"
   }
 }
 
@@ -303,7 +307,7 @@ variable "rate_limiter_enabled" {
   default     = false
 }
 
-variable rate_limiter_name {
+variable "rate_limiter_name" {
   description = "Unique name to refer to this Request Setting."
   type        = string
   default     = ""
