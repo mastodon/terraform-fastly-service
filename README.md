@@ -28,7 +28,6 @@ No modules.
 | [fastly_service_acl_entries.ip_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_acl_entries) | resource |
 | [fastly_service_dictionary_items.as_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_dictionary_items.as_request_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
-| [fastly_service_dictionary_items.edge_security](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_dictionary_items.ja_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_vcl.app_service](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_vcl) | resource |
 | [fastly_tls_subscription.tls](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/tls_subscription) | resource |
@@ -59,7 +58,6 @@ No modules.
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | Additional domains to assign to this service | `list(string)` | `[]` | no |
 | <a name="input_dynamic_compression"></a> [dynamic\_compression](#input\_dynamic\_compression) | Whether to dynamically compress responses before sending them | `bool` | `true` | no |
-| <a name="input_edge_security"></a> [edge\_security](#input\_edge\_security) | Whether to enable the Edge Security blocklist. | `bool` | `true` | no |
 | <a name="input_fastly_globeviz_url"></a> [fastly\_globeviz\_url](#input\_fastly\_globeviz\_url) | URL to send traffic data for fastly for their Global Visualization page | `string` | `""` | no |
 | <a name="input_force_tls_hsts"></a> [force\_tls\_hsts](#input\_force\_tls\_hsts) | Force TLS and HTTP Strict Transport Security (HSTS) to ensure that every request is secure. | `bool` | `true` | no |
 | <a name="input_globeviz_service"></a> [globeviz\_service](#input\_globeviz\_service) | Enables sending traffic information to Fastly's Globeviz page using the given service. | `string` | `""` | no |
