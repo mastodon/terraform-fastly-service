@@ -23,8 +23,8 @@ locals {
   rate_limiter_dict_name = "Rate limited paths"
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
-  ngwaf_workspace_name        = var.ngwaf_workspace ? var.ngwaf_workspace : local.name
-  ngwaf_workspace_description = var.ngwaf_workspace_description ? var.ngwaf_workspace_description : "${local.name} NGWAF workspace"
+  ngwaf_workspace_name        = var.ngwaf_workspace != "" ? var.ngwaf_workspace : local.name
+  ngwaf_workspace_description = var.ngwaf_workspace_description != "" ? var.ngwaf_workspace_description : "${local.name} NGWAF workspace"
 
   vcl_main = file("${path.module}/vcl/main.vcl")
 
