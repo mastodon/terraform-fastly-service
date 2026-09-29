@@ -9,7 +9,7 @@ Contains much of the logic and default configuration that exists across all offi
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 9.0.0 |
+| <a name="requirement_fastly"></a> [fastly](#requirement\_fastly) | >= 9.7.0 |
 
 ## Providers
 
@@ -25,6 +25,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [fastly_ngwaf_workspace.ngwaf_edge_workspace](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/ngwaf_workspace) | resource |
 | [fastly_service_acl_entries.ip_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_acl_entries) | resource |
 | [fastly_service_dictionary_items.as_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
 | [fastly_service_dictionary_items.as_request_blocklist_entries](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/service_dictionary_items) | resource |
@@ -38,6 +39,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_android_deep_link"></a> [android\_deep\_link](#input\_android\_deep\_link) | Enable assets for Android deep link | `bool` | `true` | no |
 | <a name="input_apex_redirect"></a> [apex\_redirect](#input\_apex\_redirect) | Enable Fastly Apex redirection | `bool` | `true` | no |
+| <a name="input_api_discovery_enabled"></a> [api\_discovery\_enabled](#input\_api\_discovery\_enabled) | Whether to enable the API Discovery product. | `bool` | `false` | no |
 | <a name="input_apple_associated_domain"></a> [apple\_associated\_domain](#input\_apple\_associated\_domain) | Enable associated domain for Apple apps | `bool` | `true` | no |
 | <a name="input_as_blocklist"></a> [as\_blocklist](#input\_as\_blocklist) | Whether to enable the AS blocklist ACLs. Must be managed externally, unless as\_blocklist\_items is given. | `bool` | `true` | no |
 | <a name="input_as_blocklist_items"></a> [as\_blocklist\_items](#input\_as\_blocklist\_items) | List of Autonomous Systems (AS) to block. This will make the Dictionary object 'managed' by terraform. | `list(number)` | `[]` | no |
@@ -51,11 +53,17 @@ No modules.
 | <a name="input_backend_name"></a> [backend\_name](#input\_backend\_name) | Optional name for the backend. | `string` | `""` | no |
 | <a name="input_backend_port"></a> [backend\_port](#input\_backend\_port) | The port number on which the Backend responds. | `number` | `443` | no |
 | <a name="input_backend_ssl_check"></a> [backend\_ssl\_check](#input\_backend\_ssl\_check) | Be strict about checking SSL certs when connecting to the backend. | `bool` | `true` | no |
+| <a name="input_bot_management_content_guard"></a> [bot\_management\_content\_guard](#input\_bot\_management\_content\_guard) | ContentGuard status. | `string` | `"off"` | no |
+| <a name="input_bot_management_enabled"></a> [bot\_management\_enabled](#input\_bot\_management\_enabled) | Whether to enable Bot Management support. | `bool` | `false` | no |
+| <a name="input_brotli_compression_enabled"></a> [brotli\_compression\_enabled](#input\_brotli\_compression\_enabled) | Whether to enable Brotli Compression support. | `bool` | `false` | no |
 | <a name="input_datadog"></a> [datadog](#input\_datadog) | Whether to send logging info to Datadog | `bool` | `false` | no |
 | <a name="input_datadog_region"></a> [datadog\_region](#input\_datadog\_region) | The region that log data will be sent to. | `string` | `"EU"` | no |
 | <a name="input_datadog_service"></a> [datadog\_service](#input\_datadog\_service) | Datadog service name to use for logs | `string` | `"fastly"` | no |
 | <a name="input_datadog_token"></a> [datadog\_token](#input\_datadog\_token) | API key from Datadog. | `string` | `""` | no |
+| <a name="input_ddos_protection_enabled"></a> [ddos\_protection\_enabled](#input\_ddos\_protection\_enabled) | Whether to enable DDoS Protection support. | `bool` | `false` | no |
+| <a name="input_ddos_protection_mode"></a> [ddos\_protection\_mode](#input\_ddos\_protection\_mode) | DDoS Protection operation mode. | `string` | `"off"` | no |
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | The default Time-to-live (TTL) for requests | `number` | `0` | no |
+| <a name="input_domain_inspector_enabled"></a> [domain\_inspector\_enabled](#input\_domain\_inspector\_enabled) | Whether to enable Domain Inspector support. | `bool` | `false` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | Additional domains to assign to this service | `list(string)` | `[]` | no |
 | <a name="input_dynamic_compression"></a> [dynamic\_compression](#input\_dynamic\_compression) | Whether to dynamically compress responses before sending them | `bool` | `true` | no |
 | <a name="input_fastly_globeviz_url"></a> [fastly\_globeviz\_url](#input\_fastly\_globeviz\_url) | URL to send traffic data for fastly for their Global Visualization page | `string` | `""` | no |
@@ -69,6 +77,7 @@ No modules.
 | <a name="input_healthcheck_path"></a> [healthcheck\_path](#input\_healthcheck\_path) | URL to use when doing a healthcheck. | `string` | `"/health"` | no |
 | <a name="input_hostname"></a> [hostname](#input\_hostname) | Hostname the service points to. | `string` | n/a | yes |
 | <a name="input_hsts_duration"></a> [hsts\_duration](#input\_hsts\_duration) | Number of seconds for the client to remember only to use HTTPS. | `number` | `31557600` | no |
+| <a name="input_image_optimizer_enabled"></a> [image\_optimizer\_enabled](#input\_image\_optimizer\_enabled) | Whether to enable Image Optimizer support. | `bool` | `false` | no |
 | <a name="input_ip_blocklist"></a> [ip\_blocklist](#input\_ip\_blocklist) | Whether to enable the IP Blocklist ACL. Must be managed externally, unless ip\_blocklist\_items is given. | `bool` | `true` | no |
 | <a name="input_ip_blocklist_items"></a> [ip\_blocklist\_items](#input\_ip\_blocklist\_items) | List of IP CIDRs to block. This will make the ACL object 'managed' by terraform. | `list(string)` | `[]` | no |
 | <a name="input_ip_blocklist_name"></a> [ip\_blocklist\_name](#input\_ip\_blocklist\_name) | Name for the ACL responsible for holding all the blocked IP ranges. | `string` | `"IP Block list"` | no |
@@ -78,6 +87,7 @@ No modules.
 | <a name="input_ja4_blocklist"></a> [ja4\_blocklist](#input\_ja4\_blocklist) | Whether to enable the JA4 Blocklist Dictionary. Must be managed externally, unless ja4\_blocklist\_items is given. | `bool` | `true` | no |
 | <a name="input_ja4_blocklist_items"></a> [ja4\_blocklist\_items](#input\_ja4\_blocklist\_items) | List of JA4 hashes to block. This will make the Dictionary object 'managed' by terraform. | `list(string)` | `[]` | no |
 | <a name="input_ja4_blocklist_name"></a> [ja4\_blocklist\_name](#input\_ja4\_blocklist\_name) | Name for the Dictionray responsible for holding all the blocked JA4 hashes. | `string` | `"JA4 Blocklist"` | no |
+| <a name="input_log_explorer_insights_enabled"></a> [log\_explorer\_insights\_enabled](#input\_log\_explorer\_insights\_enabled) | Whether to enable Log Explorer Insights support. | `bool` | `false` | no |
 | <a name="input_mastodon_error_page"></a> [mastodon\_error\_page](#input\_mastodon\_error\_page) | Whether to enable the official mastodon error page. | `bool` | `true` | no |
 | <a name="input_mastodon_maintenance_dict_name"></a> [mastodon\_maintenance\_dict\_name](#input\_mastodon\_maintenance\_dict\_name) | Name of the dictionary to set maintenance mode. | `string` | `"Maintenance Mode"` | no |
 | <a name="input_mastodon_status_page"></a> [mastodon\_status\_page](#input\_mastodon\_status\_page) | Link to an instance status page for incident/maintenance info. | `string` | `""` | no |
@@ -85,7 +95,15 @@ No modules.
 | <a name="input_media_backend"></a> [media\_backend](#input\_media\_backend) | Additional backend to use for service media files | <pre>object({<br>    address        = string<br>    name           = optional(string, "")<br>    condition      = optional(string, "")<br>    condition_name = optional(string, "Media backend condition")<br>    ssl_check      = optional(bool, true)<br>    ssl_hostname   = optional(string, "")<br>    bucket_prefix  = optional(string, "")<br>  })</pre> | <pre>{<br>  "address": ""<br>}</pre> | no |
 | <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Minimum allowed TLS version on SSL connections to the backend. | `string` | `"1.2"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the fastly service (defaults to hostname). | `string` | `""` | no |
-| <a name="input_product_enablement"></a> [product\_enablement](#input\_product\_enablement) | Which additional Fastly products to enable for this service. | <pre>object({<br>    api_discovery         = optional(bool, false)<br>    bot_management        = optional(string, "off")<br>    brotli_compression    = optional(bool, false)<br>    ddos_protection       = optional(string, "off")<br>    domain_inspector      = optional(bool, false)<br>    image_optimizer       = optional(bool, false)<br>    log_explorer_insights = optional(bool, false)<br>    ngwaf                 = optional(string, "")<br>    origin_inspector      = optional(bool, false)<br>    websockets            = optional(bool, false)<br>  })</pre> | <pre>{<br>  "api_discovery": false,<br>  "bot_management": "off",<br>  "brotli_compression": false,<br>  "ddos_protection": "off",<br>  "domain_inspector": false,<br>  "image_optimizer": false,<br>  "log_explorer_insights": false,<br>  "ngwaf": "",<br>  "origin_inspector": false,<br>  "websockets": false<br>}</pre> | no |
+| <a name="input_ngwaf_attack_threshold_immediate"></a> [ngwaf\_attack\_threshold\_immediate](#input\_ngwaf\_attack\_threshold\_immediate) | n/a | `bool` | `false` | no |
+| <a name="input_ngwaf_attack_threshold_one_hour"></a> [ngwaf\_attack\_threshold\_one\_hour](#input\_ngwaf\_attack\_threshold\_one\_hour) | n/a | `number` | `60` | no |
+| <a name="input_ngwaf_attack_threshold_one_minute"></a> [ngwaf\_attack\_threshold\_one\_minute](#input\_ngwaf\_attack\_threshold\_one\_minute) | n/a | `number` | `100` | no |
+| <a name="input_ngwaf_attack_threshold_ten_minutes"></a> [ngwaf\_attack\_threshold\_ten\_minutes](#input\_ngwaf\_attack\_threshold\_ten\_minutes) | n/a | `number` | `1` | no |
+| <a name="input_ngwaf_enabled"></a> [ngwaf\_enabled](#input\_ngwaf\_enabled) | Whether to enable the NGWAF product. | `bool` | `false` | no |
+| <a name="input_ngwaf_mode"></a> [ngwaf\_mode](#input\_ngwaf\_mode) | The operation mode of the workspace. | `string` | `"off"` | no |
+| <a name="input_ngwaf_workspace"></a> [ngwaf\_workspace](#input\_ngwaf\_workspace) | The display name of the workspace. | `string` | `""` | no |
+| <a name="input_ngwaf_workspace_description"></a> [ngwaf\_workspace\_description](#input\_ngwaf\_workspace\_description) | The description of the workspace. | `string` | `""` | no |
+| <a name="input_origin_inspector_enabled"></a> [origin\_inspector\_enabled](#input\_origin\_inspector\_enabled) | Whether to enable Origin Inspector support. | `bool` | `false` | no |
 | <a name="input_purge_auth"></a> [purge\_auth](#input\_purge\_auth) | Whether to require API tokens when subimtting HTTP PURGE requests | `bool` | `true` | no |
 | <a name="input_rate_limiter_action"></a> [rate\_limiter\_action](#input\_rate\_limiter\_action) | The action to take when a rate limiter violation is detected. | `string` | `"response"` | no |
 | <a name="input_rate_limiter_duration"></a> [rate\_limiter\_duration](#input\_rate\_limiter\_duration) | Length of time in minutes that the rate limiter is in effect after the initial violation is detected. | `number` | `2` | no |
@@ -104,6 +122,7 @@ No modules.
 | <a name="input_tls_enable"></a> [tls\_enable](#input\_tls\_enable) | Whether to create a TLS subscription in Fastly for the domain(s) | `bool` | `false` | no |
 | <a name="input_use_ssl"></a> [use\_ssl](#input\_use\_ssl) | Whether or not to use SSL to reach the Backend. | `bool` | `true` | no |
 | <a name="input_vcl_snippets"></a> [vcl\_snippets](#input\_vcl\_snippets) | Additional custom VCL snippets to add to the service. | <pre>list(object({<br>    content  = string<br>    name     = string<br>    type     = string<br>    priority = optional(number, 100)<br>  }))</pre> | `[]` | no |
+| <a name="input_websockets_enabled"></a> [websockets\_enabled](#input\_websockets\_enabled) | Whether to enable Websockets support. | `bool` | `false` | no |
 
 ## Outputs
 
