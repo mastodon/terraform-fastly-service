@@ -431,7 +431,7 @@ resource "fastly_service_vcl" "app_service" {
 
   # Additional products
   product_enablement {
-    name = local.name
+    name = "products"
 
     api_discovery = var.api_discovery_enabled
     bot_management {
