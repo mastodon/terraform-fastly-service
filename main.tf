@@ -448,7 +448,7 @@ resource "fastly_service_vcl" "app_service" {
     log_explorer_insights = var.log_explorer_insights_enabled
     ngwaf {
       enabled      = var.ngwaf_enabled
-      workspace_id = try(fastly_ngwaf_workspace.ngwaf_edge_workspace[0].id, null)
+      workspace_id = try(fastly_ngwaf_workspace.ngwaf_edge_workspace[0].id, "")
     }
     origin_inspector = var.origin_inspector_enabled
     websockets       = var.websockets_enabled
