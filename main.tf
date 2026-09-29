@@ -24,7 +24,6 @@ locals {
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
   ngwaf_workspace_name        = var.ngwaf_workspace != "" ? var.ngwaf_workspace : local.name
-  ngwaf_workspace_description = var.ngwaf_workspace_description != "" ? var.ngwaf_workspace_description : "${local.name} NGWAF workspace"
 
   vcl_main = file("${path.module}/vcl/main.vcl")
 
@@ -57,7 +56,7 @@ resource "fastly_ngwaf_workspace" "ngwaf_edge_workspace" {
   count = var.ngwaf_enabled ? 1 : 0
 
   name        = local.ngwaf_workspace_name
-  description = local.ngwaf_workspace_description
+  description = var.ngwaf_workspace_description
   mode        = var.ngwaf_mode
 
   attack_signal_thresholds {
