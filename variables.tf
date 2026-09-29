@@ -259,34 +259,6 @@ variable "dynamic_compression" {
   default     = true
 }
 
-variable "product_enablement" {
-  description = "Which additional Fastly products to enable for this service."
-  type = object({
-    api_discovery         = optional(bool, false)
-    bot_management        = optional(string, "off")
-    brotli_compression    = optional(bool, false)
-    ddos_protection       = optional(string, "off")
-    domain_inspector      = optional(bool, false)
-    image_optimizer       = optional(bool, false)
-    log_explorer_insights = optional(bool, false)
-    ngwaf                 = optional(string, "")
-    origin_inspector      = optional(bool, false)
-    websockets            = optional(bool, false)
-  })
-  default = {
-    api_discovery         = false
-    bot_management        = "off"
-    brotli_compression    = false
-    ddos_protection       = "off"
-    domain_inspector      = false
-    image_optimizer       = false
-    log_explorer_insights = false
-    ngwaf                 = ""
-    origin_inspector      = false
-    websockets            = false
-  }
-}
-
 variable "purge_auth" {
   description = "Whether to require API tokens when subimtting HTTP PURGE requests"
   type        = bool
@@ -351,6 +323,141 @@ variable "rate_limiter_window_size" {
     condition     = contains([1, 10, 60], var.rate_limiter_window_size)
     error_message = "Must be one of: 1, 10, 60"
   }
+}
+
+# Product enablement configuration
+
+variable "api_discovery_enabled" {
+  description = "Whether to enable the API Discovery product."
+  type        = bool
+  default     = false
+}
+
+variable "bot_management_enabled" {
+  description = "Whether to enable Bot Management support."
+  type        = bool
+  default     = false
+}
+
+variable "bot_management_content_guard" {
+  description = "ContentGuard status."
+  type        = string
+  default     = "off"
+
+  validation {
+    condition     = contains(["off", "on"], var.bot_management_content_guard)
+    error_message = "Must be one of: off, on"
+  }
+}
+
+variable "brotli_compression_enabled" {
+  description = "Whether to enable Brotli Compression support."
+  type        = bool
+  default     = false
+}
+
+variable "ddos_protection_enabled" {
+  description = "Whether to enable DDoS Protection support."
+  type        = bool
+  default     = false
+}
+
+variable "ddos_protection_mode" {
+  description = "DDoS Protection operation mode."
+  type        = string
+  default     = "off"
+
+  validation {
+    condition     = contains(["off", "log", "block", "client_challenge"], var.ddos_protection_mode)
+    error_message = "Must be one of: off, log, block, client_challenge"
+  }
+}
+
+variable "domain_inspector_enabled" {
+  description = "Whether to enable Domain Inspector support."
+  type        = bool
+  default     = false
+
+}
+
+variable "image_optimizer_enabled" {
+  description = "Whether to enable Image Optimizer support."
+  type        = bool
+  default     = false
+
+}
+
+variable "log_explorer_insights_enabled" {
+  description = "Whether to enable Log Explorer Insights support."
+  type        = bool
+  default     = false
+
+}
+
+variable "ngwaf_enabled" {
+  description = "Whether to enable the NGWAF product."
+  type        = bool
+  default     = false
+}
+
+variable "ngwaf_workspace" {
+  description = "The display name of the workspace."
+  type        = string
+  default     = ""
+}
+
+variable "ngwaf_workspace_description" {
+  description = "The description of the workspace."
+  type        = string
+  default     = ""
+}
+
+variable "ngwaf_mode" {
+  description = "The operation mode of the workspace."
+  type        = string
+  default     = "off"
+
+  validation {
+    condition     = contains(["off", "block", "log"], var.ngwaf_mode)
+    error_message = "Must be one of: off, block, log"
+  }
+}
+
+variable "ngwaf_attack_threshold_one_minute" {
+  description = ""
+  type        = number
+  default     = 100
+}
+
+variable "ngwaf_attack_threshold_ten_minutes" {
+  description = ""
+  type        = number
+  default     = 1
+}
+
+variable "ngwaf_attack_threshold_one_hour" {
+  description = ""
+  type        = number
+  default     = 60
+}
+
+variable "ngwaf_attack_threshold_immediate" {
+  description = ""
+  type        = bool
+  default     = false
+}
+variable "origin_inspector_enabled" {
+  description = "Whether to enable Origin Inspector support."
+  type        = bool
+  default     = false
+
+}
+
+variable "websockets_enabled" {
+  description = "Whether to enable Websockets support."
+  type        = bool
+  default     = false
+
 }
 
 # IP block lists

@@ -10,8 +10,8 @@ locals {
   media_backend_name_vcl = "F_${replace(local.media_backend_name, " ", "_")}"
   media_ssl_hostname     = var.media_backend["ssl_hostname"] != "" ? var.media_backend["ssl_hostname"] : var.media_backend["address"]
 
-  maintenance_dict_name   = replace(var.mastodon_maintenance_dict_name, " ", "_")
-  status_html             = var.mastodon_status_page != "" ? "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n" : ""
+  maintenance_dict_name = replace(var.mastodon_maintenance_dict_name, " ", "_")
+  status_html           = var.mastodon_status_page != "" ? "<div class=\"status-page\">You can check our <a href=\"${var.mastodon_status_page}\">status page</a> for more information about any incidents or maintenance.</div>\n" : ""
 
   datadog_format         = replace(file("${path.module}/logging/datadog.json"), "__service__", var.datadog_service)
   fastly_globeviz_format = file("${path.module}/logging/fastly_globeviz.json")
@@ -23,6 +23,9 @@ locals {
   rate_limiter_dict_name = "Rate limited paths"
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
+  ngwaf_workspace_name        = var.ngwaf_workspace ? var.ngwaf_workspace : local.name
+  ngwaf_workspace_description = var.ngwaf_workspace_description ? var.ngwaf_workspace_description : "${local.name} NGWAF workspace"
+
   vcl_main = file("${path.module}/vcl/main.vcl")
 
   vcl_apex_error            = templatefile("${path.module}/vcl/apex_error.vcl", { hostname = var.hostname })
@@ -30,24 +33,39 @@ locals {
   vcl_backend_403           = file("${path.module}/vcl/backend_403.vcl")
   vcl_block_user_agents     = file("${path.module}/vcl/block_user_agents.vcl")
   vcl_custom_error_redirect = file("${path.module}/vcl/custom_error_redirect.vcl")
-  vcl_custom_error          = templatefile("${path.module}/vcl/custom_error.vcl", {
+  vcl_custom_error = templatefile("${path.module}/vcl/custom_error.vcl", {
     hostname = var.hostname,
-    table    = local.maintenance_dict_name ,
+    table    = local.maintenance_dict_name,
     status   = local.status_html
   })
-  vcl_static_cache_control  = file("${path.module}/vcl/static_cache_control.vcl")
-  vcl_tarpit                = file("${path.module}/vcl/tarpit.vcl")
-  vcl_globeviz              = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
-  vcl_purge_auth            = file("${path.module}/vcl/purge_auth.vcl")
+  vcl_static_cache_control = file("${path.module}/vcl/static_cache_control.vcl")
+  vcl_tarpit               = file("${path.module}/vcl/tarpit.vcl")
+  vcl_globeviz             = templatefile("${path.module}/vcl/globeviz.vcl", { service = var.globeviz_service })
+  vcl_purge_auth           = file("${path.module}/vcl/purge_auth.vcl")
   vcl_media_redirect = templatefile("${path.module}/vcl/media_redirect.vcl", {
     backend  = local.media_backend_name_vcl,
     redirect = var.media_backend["bucket_prefix"]
   })
   vcl_media_cache_control = templatefile("${path.module}/vcl/media_cache_control.vcl", {
-    condition  = var.media_backend["condition"]
+    condition = var.media_backend["condition"]
   })
 
   tls_domains = length(var.tls_domains) >= 1 ? var.tls_domains : concat([var.hostname], var.domains)
+}
+
+resource "fastly_ngwaf_workspace" "ngwaf_edge_workspace" {
+  count = var.ngwaf_enabled ? 1 : 0
+
+  name        = local.ngwaf_workspace_name
+  description = local.ngwaf_workspace_description
+  mode        = var.ngwaf_mode
+
+  attack_signal_thresholds {
+    one_minute  = var.ngwaf_attack_threshold_one_minute
+    ten_minutes = var.ngwaf_attack_threshold_ten_minutes
+    one_hour    = var.ngwaf_attack_threshold_one_hour
+    immediate   = var.ngwaf_attack_threshold_immediate
+  }
 }
 
 resource "fastly_service_vcl" "app_service" {
@@ -414,25 +432,27 @@ resource "fastly_service_vcl" "app_service" {
 
   # Additional products
   product_enablement {
-    api_discovery = var.product_enablement.api_discovery
+    name = local.name
+
+    api_discovery = var.api_discovery_enabled
     bot_management {
-      enabled      = var.product_enablement.bot_management != "off" ? true : false
-      contentguard = var.product_enablement.bot_management
+      enabled      = var.bot_management_enabled
+      contentguard = var.bot_management_content_guard
     }
-    brotli_compression = var.product_enablement.brotli_compression
+    brotli_compression = var.brotli_compression_enabled
     ddos_protection {
-      enabled = var.product_enablement.ddos_protection != "off" ? true : false
-      mode    = var.product_enablement.ddos_protection
+      enabled = var.ddos_protection_enabled
+      mode    = var.ddos_protection_mode
     }
-    domain_inspector      = var.product_enablement.domain_inspector
-    image_optimizer       = var.product_enablement.image_optimizer
-    log_explorer_insights = var.product_enablement.log_explorer_insights
+    domain_inspector      = var.domain_inspector_enabled
+    image_optimizer       = var.image_optimizer_enabled
+    log_explorer_insights = var.log_explorer_insights_enabled
     ngwaf {
-      enabled      = var.product_enablement.ngwaf != "" ? true : false
-      workspace_id = var.product_enablement.ngwaf
+      enabled      = var.ngwaf_enabled
+      workspace_id = fastly_ngwaf_workspace.ngwaf_edge_workspace.id
     }
-    origin_inspector = var.product_enablement.origin_inspector
-    websockets       = var.product_enablement.websockets
+    origin_inspector = var.origin_inspector_enabled
+    websockets       = var.websockets_enabled
   }
 
   # Support Apple Associated Domains
