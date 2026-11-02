@@ -462,7 +462,7 @@ resource "fastly_service_vcl" "app_service" {
     content{
       name     = "ngwaf_config_init"
       type     = "init"
-      priority = 150
+      priority = 0
     }
   }
 
