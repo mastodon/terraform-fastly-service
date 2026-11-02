@@ -454,6 +454,48 @@ resource "fastly_service_vcl" "app_service" {
     websockets       = var.websockets_enabled
   }
 
+  # NGWAF resources
+
+  dynamic "dynamicsnippet" {
+    for_each = var.ngwaf_enabled ? [1] : []
+
+    content{
+      name     = "ngwaf_config_init"
+      type     = "init"
+      priority = 150
+    }
+  }
+
+  dynamic "dynamicsnippet" {
+    for_each = var.ngwaf_enabled ? [1] : []
+
+    content{
+      name     = "ngwaf_config_deliver"
+      type     = "deliver"
+      priority = 150
+    }
+  }
+
+  dynamic "dynamicsnippet" {
+    for_each = var.ngwaf_enabled ? [1] : []
+
+    content{
+      name     = "ngwaf_config_pass"
+      type     = "pass"
+      priority = 150
+    }
+  }
+
+  dynamic "dynamicsnippet" {
+    for_each = var.ngwaf_enabled ? [1] : []
+
+    content{
+      name     = "ngwaf_config_miss"
+      type     = "miss"
+      priority = 150
+    }
+  }
+
   # Support Apple Associated Domains
 
   dynamic "condition" {
