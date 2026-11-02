@@ -458,6 +458,13 @@ resource "fastly_service_vcl" "app_service" {
 
   # NGWAF resources
 
+  dynamic "dictionary" {
+    for_each = var.ngwaf_enabled ? [1] : []
+    content {
+      name = "Edge_Security"
+    }
+  }
+
   dynamic "dynamicsnippet" {
     for_each = var.ngwaf_enabled ? [1] : []
 
