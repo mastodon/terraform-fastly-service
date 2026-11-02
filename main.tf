@@ -23,7 +23,7 @@ locals {
   rate_limiter_dict_name = "Rate limited paths"
   rate_limiter_response  = file("${path.module}/responses/rate_limiter.html")
 
-  ngwaf_workspace_name        = var.ngwaf_workspace != "" ? var.ngwaf_workspace : local.name
+  ngwaf_workspace_name = var.ngwaf_workspace != "" ? var.ngwaf_workspace : local.name
 
   vcl_main = file("${path.module}/vcl/main.vcl")
 
@@ -468,7 +468,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "dynamicsnippet" {
     for_each = var.ngwaf_enabled ? [1] : []
 
-    content{
+    content {
       name     = "ngwaf_config_init"
       type     = "init"
       priority = 0
@@ -478,7 +478,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "dynamicsnippet" {
     for_each = var.ngwaf_enabled ? [1] : []
 
-    content{
+    content {
       name     = "ngwaf_config_deliver"
       type     = "deliver"
       priority = 150
@@ -488,7 +488,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "dynamicsnippet" {
     for_each = var.ngwaf_enabled ? [1] : []
 
-    content{
+    content {
       name     = "ngwaf_config_pass"
       type     = "pass"
       priority = 150
@@ -498,7 +498,7 @@ resource "fastly_service_vcl" "app_service" {
   dynamic "dynamicsnippet" {
     for_each = var.ngwaf_enabled ? [1] : []
 
-    content{
+    content {
       name     = "ngwaf_config_miss"
       type     = "miss"
       priority = 150
