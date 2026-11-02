@@ -589,3 +589,11 @@ variable "tls_authority" {
     error_message = "Must be one of: lets-encrypt, globalsign or certainly"
   }
 }
+
+# Custom responses
+
+variable "robots" {
+  description = "Whether to enable the robots.txt response"
+  type        = bool
+  default     = true
+}
